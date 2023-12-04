@@ -1,7 +1,7 @@
 ---
-name: Task
+name: Task | Task name
 about: Task Issue card for general purpose
-title: "[Task] myTask"
+title: "[Task] Task name"
 labels: ''
 assignees: DDnK-dev
 
@@ -9,15 +9,15 @@ assignees: DDnK-dev
 
 # Background
 
-why i have to do
+'why' i have to do this task
 
 ## Goal
 
-- something to do
+- what i have to do
 
 ## Objective
 
-- [ ] some objective
+- [ ] todo list
 
 ## ETC
 
