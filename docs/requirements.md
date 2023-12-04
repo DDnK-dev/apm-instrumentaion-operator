@@ -12,3 +12,10 @@
 
 - admission controller
 - api resource
+
+kubebuilder init --domain ogas.kr --repo github.com/DDnK-dev/apm-instrumentaion-operator --license apache2
+
+kubebuilder create api --version v1 --group apm --kind Instrumentation
+
+kubebuilder create webhook --version v1 --group apm --kind Instrumentation --defaulting --programmatic-validation
+
