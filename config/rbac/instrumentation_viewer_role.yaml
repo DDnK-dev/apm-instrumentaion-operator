@@ -1,0 +1,27 @@
+# permissions for end users to view instrumentations.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: instrumentation-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: apm-instrumentation-operator
+    app.kubernetes.io/part-of: apm-instrumentation-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: instrumentation-viewer-role
+rules:
+- apiGroups:
+  - apm.ogas.kr
+  resources:
+  - instrumentations
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apm.ogas.kr
+  resources:
+  - instrumentations/status
+  verbs:
+  - get

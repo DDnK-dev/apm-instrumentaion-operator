@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- apm_v1_instrumentation.yaml
+#+kubebuilder:scaffold:manifestskustomizesamples
