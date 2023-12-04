@@ -1,5 +1,5 @@
 ---
-name: Task | Task name
+name: "[Task]"
 about: Task Issue card for general purpose
 title: "[Task] Task name"
 labels: ''
