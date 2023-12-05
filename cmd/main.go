@@ -18,6 +18,7 @@ package main
 
 import (
 	"flag"
+	v12 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -31,8 +32,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
-
-	apmv1 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -44,7 +43,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(apmv1.AddToScheme(scheme))
+	utilruntime.Must(v12.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
@@ -89,7 +88,7 @@ func main() {
 	}
 
 	if os.Getenv("ENABLE_WEBHOOKS") != "false" {
-		if err = (&apmv1.Instrumentation{}).SetupWebhookWithManager(mgr); err != nil {
+		if err = (&v12.Instrumentation{}).SetupWebhookWithManager(mgr); err != nil {
 			setupLog.Error(err, "unable to create webhook", "webhook", "Instrumentation")
 			os.Exit(1)
 		}

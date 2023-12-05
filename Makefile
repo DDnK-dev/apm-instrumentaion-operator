@@ -177,3 +177,13 @@ $(CONTROLLER_GEN): $(LOCALBIN)
 envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
+
+##@ Utilities
+
+.PHONY: gen-doc
+gen-doc: ## generate api specification documentation
+	bin/gen-crd-api-reference-docs \
+        -config "scripts/documentation/gen-doc-config.json" \
+        -api-dir "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1" \
+        -template-dir "scripts/documentation/template" \
+        -out-file docs/api.md
