@@ -37,6 +37,8 @@ type InstrumentationSpec struct {
 	Configuration `json:",inline"`
 
 	Java Java `json:"java,omitempty"`
+
+	Go Go `json:"go,omitempty"`
 }
 
 // Configuration defines the common configuration for all instrumentation
@@ -88,6 +90,19 @@ type Java struct {
 	// kubebuilder:default=simple
 	// kubebuilder:validation:Enum=simple;none;application
 	Logging string `json:"logging,omitempty"`
+}
+
+type Go struct {
+	// Endpoint defines the endpoint to send the data to
+	// +optional
+	Endpoint string `json:"endpoint,omitempty"`
+
+	// GoTarget defines the executable target to instrument
+	// +kubebuilder:required
+	GoTarget string `json:"goTarget"`
+
+	// Configuration defines the common configuration for all instrumentation
+	Configuration `json:",inline"`
 }
 
 // InstrumentationStatus defines the observed state of Instrumentation
