@@ -1,0 +1,218 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.13.0
+  name: instrumentations.apm.ogas.kr
+spec:
+  group: apm.ogas.kr
+  names:
+    kind: Instrumentation
+    listKind: InstrumentationList
+    plural: instrumentations
+    singular: instrumentation
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: Instrumentation is the Schema for the instrumentations API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InstrumentationSpec defines the desired state of Instrumentation
+            properties:
+              endpoint:
+                description: Endpoint defines the endpoint to send the data to
+                type: string
+              go:
+                properties:
+                  endpoint:
+                    description: Endpoint defines the endpoint to send the data to
+                    type: string
+                  goTarget:
+                    description: GoTarget defines the executable target to instrument
+                    type: string
+                  logs:
+                    default: none
+                    description: Logs defines whether to enable logs
+                    enum:
+                    - none
+                    - otlp
+                    - logging
+                    type: string
+                  metrics:
+                    default: none
+                    description: Metrics defines whether to enable metrics
+                    enum:
+                    - none
+                    - otlp
+                    - logging
+                    - prometheus
+                    type: string
+                  propagator:
+                    default:
+                    - tracecontext
+                    - baggage
+                    description: 'Propagator defines the propagation type, comma-separated
+                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
+                    items:
+                      type: string
+                    type: array
+                  sampler:
+                    default: parentbased_traceidratio
+                    description: Sampler defines the sampler type ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                    type: string
+                  samplerArg:
+                    default: 0.01
+                    description: SamplerArg defines the sampler argument [0...1]
+                    type: string
+                  serviceNameLabel:
+                    default: app.kubernetes.io/name
+                    description: ServiceNameLabel defines the label key used to define
+                      the service name
+                    type: string
+                  tracer:
+                    default: otlp
+                    description: Tracer defines the tracer type
+                    enum:
+                    - none
+                    - otlp
+                    - jaeger
+                    - zipkin
+                    - logging
+                    type: string
+                required:
+                - goTarget
+                type: object
+              java:
+                properties:
+                  endpoint:
+                    description: Endpoint defines the endpoint to send the data to
+                    type: string
+                  logging:
+                    description: Logging defines the logging configuration kubebuilder:default=simple
+                      kubebuilder:validation:Enum=simple;none;application
+                    type: string
+                  logs:
+                    default: none
+                    description: Logs defines whether to enable logs
+                    enum:
+                    - none
+                    - otlp
+                    - logging
+                    type: string
+                  metrics:
+                    default: none
+                    description: Metrics defines whether to enable metrics
+                    enum:
+                    - none
+                    - otlp
+                    - logging
+                    - prometheus
+                    type: string
+                  propagator:
+                    default:
+                    - tracecontext
+                    - baggage
+                    description: 'Propagator defines the propagation type, comma-separated
+                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
+                    items:
+                      type: string
+                    type: array
+                  sampler:
+                    default: parentbased_traceidratio
+                    description: Sampler defines the sampler type ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                    type: string
+                  samplerArg:
+                    default: 0.01
+                    description: SamplerArg defines the sampler argument [0...1]
+                    type: string
+                  serviceNameLabel:
+                    default: app.kubernetes.io/name
+                    description: ServiceNameLabel defines the label key used to define
+                      the service name
+                    type: string
+                  tracer:
+                    default: otlp
+                    description: Tracer defines the tracer type
+                    enum:
+                    - none
+                    - otlp
+                    - jaeger
+                    - zipkin
+                    - logging
+                    type: string
+                type: object
+              logs:
+                default: none
+                description: Logs defines whether to enable logs
+                enum:
+                - none
+                - otlp
+                - logging
+                type: string
+              metrics:
+                default: none
+                description: Metrics defines whether to enable metrics
+                enum:
+                - none
+                - otlp
+                - logging
+                - prometheus
+                type: string
+              propagator:
+                default:
+                - tracecontext
+                - baggage
+                description: 'Propagator defines the propagation type, comma-separated
+                  list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
+                items:
+                  type: string
+                type: array
+              sampler:
+                default: parentbased_traceidratio
+                description: Sampler defines the sampler type ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                type: string
+              samplerArg:
+                default: 0.01
+                description: SamplerArg defines the sampler argument [0...1]
+                type: string
+              serviceNameLabel:
+                default: app.kubernetes.io/name
+                description: ServiceNameLabel defines the label key used to define
+                  the service name
+                type: string
+              tracer:
+                default: otlp
+                description: Tracer defines the tracer type
+                enum:
+                - none
+                - otlp
+                - jaeger
+                - zipkin
+                - logging
+                type: string
+            required:
+            - endpoint
+            type: object
+          status:
+            description: InstrumentationStatus defines the observed state of Instrumentation
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
