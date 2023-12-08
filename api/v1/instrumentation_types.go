@@ -55,8 +55,8 @@ type Configuration struct {
 
 	// Propagator defines the propagation type, comma-separated list of propagators
 	// ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
-	// +kubebuilder:default=tracecontext,baggage
-	Propagator string `json:"propagator,omitempty"`
+	// +kubebuilder:default={tracecontext,baggage}
+	Propagator []string `json:"propagator,omitempty"`
 
 	// Sampler defines the sampler type
 	// ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
