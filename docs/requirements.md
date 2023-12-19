@@ -13,9 +13,11 @@
 - admission controller
 - api resource
 
-kubebuilder init --domain ogas.kr --repo github.com/DDnK-dev/apm-instrumentaion-operator --license apache2
+## Instrumentation obejct priority
 
-kubebuilder create api --version v1 --group apm --kind Instrumentation
+Which Instrumentation spec should be applied to the application?
 
-kubebuilder create webhook --version v1 --group apm --kind Instrumentation --defaulting --programmatic-validation
-
+- If user didn't set instrumentation,
+  - 1. Instrumentation object on the same namespace with application (on multiple case, first one (random) will be applied).
+  - 2. Default instrumentation object will be applied, which is labeled with `apm.ogas.kr/default: true`.
+- If user set instrumentation, user's instrumentation will be applied.

@@ -1,6 +1,6 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+IMG ?= wdk1994/apm-controller:latest
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.28.0
 
@@ -178,6 +178,10 @@ envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
 
+.PHONY: cert-manager
+cert-manager: ## Download and set-up cert-manager on kubernetes if necessary
+	$(KUBECTL) apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
+
 ##@ Utilities
 
 .PHONY: gen-doc
@@ -187,3 +191,8 @@ gen-doc: ## generate api specification documentation
         -api-dir "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1" \
         -template-dir "scripts/documentation/template" \
         -out-file docs/api.md
+
+.PHONY: test-sample
+test-sample: ## test deploy test using config/samples
+	kubectl apply -f config/samples
+

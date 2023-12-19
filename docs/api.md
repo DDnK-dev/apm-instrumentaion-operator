@@ -55,35 +55,13 @@ string
 <td>
 <code>propagator</code><br/>
 <em>
-string
+[]string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>sampler</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Sampler defines the sampler type
-ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
 </td>
 </tr>
 <tr>
@@ -94,6 +72,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Metrics defines whether to enable metrics</p>
 </td>
 </tr>
@@ -105,6 +84,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Logs defines whether to enable logs</p>
 </td>
 </tr>
@@ -150,6 +130,31 @@ string
 </tr>
 <tr>
 <td>
+<code>sampler</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Sampler defines the sampler type
+ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>samplerArg</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>tracer</code><br/>
 <em>
 string
@@ -175,35 +180,13 @@ string
 <td>
 <code>propagator</code><br/>
 <em>
-string
+[]string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>sampler</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Sampler defines the sampler type
-ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
 </td>
 </tr>
 <tr>
@@ -214,6 +197,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Metrics defines whether to enable metrics</p>
 </td>
 </tr>
@@ -225,6 +209,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Logs defines whether to enable logs</p>
 </td>
 </tr>
@@ -283,6 +268,31 @@ string
 </tr>
 <tr>
 <td>
+<code>sampler</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Sampler defines the sampler type
+ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>samplerArg</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>tracer</code><br/>
 <em>
 string
@@ -308,35 +318,13 @@ string
 <td>
 <code>propagator</code><br/>
 <em>
-string
+[]string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>sampler</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Sampler defines the sampler type
-ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
 </td>
 </tr>
 <tr>
@@ -347,6 +335,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Metrics defines whether to enable metrics</p>
 </td>
 </tr>
@@ -358,6 +347,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Logs defines whether to enable logs</p>
 </td>
 </tr>
@@ -431,6 +421,31 @@ string
 </tr>
 <tr>
 <td>
+<code>sampler</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Sampler defines the sampler type
+ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>samplerArg</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>tracer</code><br/>
 <em>
 string
@@ -456,35 +471,13 @@ string
 <td>
 <code>propagator</code><br/>
 <em>
-string
+[]string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>sampler</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Sampler defines the sampler type
-ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
 </td>
 </tr>
 <tr>
@@ -495,6 +488,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Metrics defines whether to enable metrics</p>
 </td>
 </tr>
@@ -506,6 +500,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Logs defines whether to enable logs</p>
 </td>
 </tr>
@@ -572,6 +567,31 @@ string
 </tr>
 <tr>
 <td>
+<code>sampler</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Sampler defines the sampler type
+ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>samplerArg</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>tracer</code><br/>
 <em>
 string
@@ -597,35 +617,13 @@ string
 <td>
 <code>propagator</code><br/>
 <em>
-string
+[]string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>sampler</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>Sampler defines the sampler type
-ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
 </td>
 </tr>
 <tr>
@@ -636,6 +634,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Metrics defines whether to enable metrics</p>
 </td>
 </tr>
@@ -647,6 +646,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>Logs defines whether to enable logs</p>
 </td>
 </tr>
@@ -661,6 +661,48 @@ string
 <p>Logging defines the logging configuration
 kubebuilder:default=simple
 kubebuilder:validation:Enum=simple;none;application</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="apm.ogas.kr/v1.Sampling">Sampling
+</h3>
+<p>
+(<em>Appears on:</em><a href="#apm.ogas.kr/v1.Go">Go</a>, <a href="#apm.ogas.kr/v1.InstrumentationSpec">InstrumentationSpec</a>, <a href="#apm.ogas.kr/v1.Java">Java</a>)
+</p>
+<div>
+</div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>sampler</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Sampler defines the sampler type
+ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>samplerArg</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
 </td>
 </tr>
 </tbody>
