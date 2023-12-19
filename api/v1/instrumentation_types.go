@@ -32,6 +32,10 @@ type InstrumentationSpec struct {
 	// +kubebuilder:required
 	Endpoint string `json:"endpoint"`
 
+	// Sampling defines the sampling configuration
+	// root configuration may be overridden by each instrumentation
+	Sampling Sampling `json:",inline"`
+
 	// Configuration defines the common configuration for all instrumentation
 	// root configuration may be overridden by each instrumentation
 	Configuration `json:",inline"`
@@ -56,32 +60,42 @@ type Configuration struct {
 	// Propagator defines the propagation type, comma-separated list of propagators
 	// ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
 	// +kubebuilder:default={tracecontext,baggage}
+	// +optional
 	Propagator []string `json:"propagator,omitempty"`
-
-	// Sampler defines the sampler type
-	// ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
-	// +kubebuilder:default=parentbased_traceidratio
-	Sampler string `json:"sampler,omitempty"`
-
-	// SamplerArg defines the sampler argument [0...1]
-	// +kubebuilder:default=0.01
-	SamplerArg string `json:"samplerArg,omitempty"`
 
 	// Metrics defines whether to enable metrics
 	// +kubebuilder:default=none
 	// +kubebuilder:validation:Enum=none;otlp;logging;prometheus
+	// +optional
 	Metrics string `json:"metrics,omitempty"`
 
 	// Logs defines whether to enable logs
 	// +kubebuilder:default=none
 	// +kubebuilder:validation:Enum=none;otlp;logging
+	// +optional
 	Logs string `json:"logs,omitempty"`
+}
+
+type Sampling struct {
+	// Sampler defines the sampler type
+	// ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+	// +kubebuilder:default=parentbased_traceidratio
+	// +optional
+	Sampler string `json:"sampler,omitempty"`
+
+	// SamplerArg defines the sampler argument [0...1]
+	// +kubebuilder:default="0.01"
+	// +optional
+	SamplerArg string `json:"samplerArg,omitempty"`
 }
 
 type Java struct {
 	// Endpoint defines the endpoint to send the data to
 	// +optional
 	Endpoint string `json:"endpoint,omitempty"`
+
+	// Sampling defines the sampling configuration
+	Sampling Sampling `json:",inline"`
 
 	// Configuration defines the common configuration for all instrumentation
 	Configuration `json:",inline"`
@@ -100,6 +114,9 @@ type Go struct {
 	// GoTarget defines the executable target to instrument
 	// +kubebuilder:required
 	GoTarget string `json:"goTarget"`
+
+	// Sampling defines the sampling configuration
+	Sampling Sampling `json:",inline"`
 
 	// Configuration defines the common configuration for all instrumentation
 	Configuration `json:",inline"`

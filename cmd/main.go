@@ -19,7 +19,9 @@ package main
 import (
 	"flag"
 	v12 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation"
 	"os"
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
@@ -70,22 +72,13 @@ func main() {
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "1c13b2b0.ogas.kr",
-		// LeaderElectionReleaseOnCancel defines if the leader should step down voluntarily
-		// when the Manager ends. This requires the binary to immediately end when the
-		// Manager is stopped, otherwise, this setting is unsafe. Setting this significantly
-		// speeds up voluntary leader transitions as the new leader don't have to wait
-		// LeaseDuration time first.
-		//
-		// In the default scaffold provided, the program ends immediately after
-		// the manager stops, so would be fine to enable this option. However,
-		// if you are doing or is intended to do any operation such as perform cleanups
-		// after the manager stops then its usage might be unsafe.
-		// LeaderElectionReleaseOnCancel: true,
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
 		os.Exit(1)
 	}
+	mgr.GetEventRecorderFor("instrumentation-controller")
+	mgr.GetWebhookServer().Register("/mutate-v1-pod", &webhook.Admission{Handler: &mutation.PodHandler{Client: mgr.GetClient()}})
 
 	if os.Getenv("ENABLE_WEBHOOKS") != "false" {
 		if err = (&v12.Instrumentation{}).SetupWebhookWithManager(mgr); err != nil {
