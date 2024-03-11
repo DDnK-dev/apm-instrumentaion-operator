@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -55,6 +56,7 @@ type Configuration struct {
 
 	// ServiceNameLabel defines the label key used to define the service name
 	// +kubebuilder:default=app.kubernetes.io/name
+	// +optional
 	ServiceNameLabel string `json:"serviceNameLabel,omitempty"`
 
 	// Propagator defines the propagation type, comma-separated list of propagators
@@ -62,6 +64,11 @@ type Configuration struct {
 	// +kubebuilder:default={tracecontext,baggage}
 	// +optional
 	Propagator []string `json:"propagator,omitempty"`
+
+	// envVars defines the environment variables to inject
+	// If there is already an env var with the same name, it will be skipped
+	// +optional
+	EnvVars []corev1.EnvVar `json:"envVars,omitempty"`
 
 	// Metrics defines whether to enable metrics
 	// +kubebuilder:default=none
@@ -90,6 +97,10 @@ type Sampling struct {
 }
 
 type Java struct {
+	// Image is a container image with javaagent auto-instrumentation JAR.
+	// +optional
+	Image string `json:"image,omitempty"`
+
 	// Endpoint defines the endpoint to send the data to
 	// +optional
 	Endpoint string `json:"endpoint,omitempty"`

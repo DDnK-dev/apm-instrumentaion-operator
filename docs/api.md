@@ -48,6 +48,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>ServiceNameLabel defines the label key used to define the service name</p>
 </td>
 </tr>
@@ -62,6 +63,21 @@ string
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>envVars</code><br/>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#envvar-v1-core">
+[]Kubernetes core/v1.EnvVar
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>envVars defines the environment variables to inject
+If there is already an env var with the same name, it will be skipped</p>
 </td>
 </tr>
 <tr>
@@ -173,6 +189,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>ServiceNameLabel defines the label key used to define the service name</p>
 </td>
 </tr>
@@ -187,6 +204,21 @@ string
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>envVars</code><br/>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#envvar-v1-core">
+[]Kubernetes core/v1.EnvVar
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>envVars defines the environment variables to inject
+If there is already an env var with the same name, it will be skipped</p>
 </td>
 </tr>
 <tr>
@@ -311,6 +343,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>ServiceNameLabel defines the label key used to define the service name</p>
 </td>
 </tr>
@@ -325,6 +358,21 @@ string
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>envVars</code><br/>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#envvar-v1-core">
+[]Kubernetes core/v1.EnvVar
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>envVars defines the environment variables to inject
+If there is already an env var with the same name, it will be skipped</p>
 </td>
 </tr>
 <tr>
@@ -464,6 +512,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>ServiceNameLabel defines the label key used to define the service name</p>
 </td>
 </tr>
@@ -478,6 +527,21 @@ string
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>envVars</code><br/>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#envvar-v1-core">
+[]Kubernetes core/v1.EnvVar
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>envVars defines the environment variables to inject
+If there is already an env var with the same name, it will be skipped</p>
 </td>
 </tr>
 <tr>
@@ -555,6 +619,18 @@ Go
 <tbody>
 <tr>
 <td>
+<code>image</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Image is a container image with javaagent auto-instrumentation JAR.</p>
+</td>
+</tr>
+<tr>
+<td>
 <code>endpoint</code><br/>
 <em>
 string
@@ -610,6 +686,7 @@ string
 </em>
 </td>
 <td>
+<em>(Optional)</em>
 <p>ServiceNameLabel defines the label key used to define the service name</p>
 </td>
 </tr>
@@ -624,6 +701,21 @@ string
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
 ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>envVars</code><br/>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#envvar-v1-core">
+[]Kubernetes core/v1.EnvVar
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>envVars defines the environment variables to inject
+If there is already an env var with the same name, it will be skipped</p>
 </td>
 </tr>
 <tr>
