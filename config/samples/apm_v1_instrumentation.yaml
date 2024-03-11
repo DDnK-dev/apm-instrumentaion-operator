@@ -9,4 +9,4 @@ metadata:
     app.kubernetes.io/created-by: apm-instrumentation-operator
   name: instrumentation-sample
 spec:
-  # TODO(user): Add fields here
+  endpoint: http://localhost:8080
