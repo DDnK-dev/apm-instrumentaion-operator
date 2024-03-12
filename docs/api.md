@@ -37,7 +37,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Tracer defines the tracer type</p>
+<p>Tracer defines the tracer type
+if all tracer value didn&rsquo;t set, set default value
+default=otlp</p>
 </td>
 </tr>
 <tr>
@@ -49,7 +51,10 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>ServiceNameLabel defines the label key used to define the service name</p>
+<p>ServiceNameLabel defines the label key used to define the service name
+if all value didn&rsquo;t set, set default value
+default=app.kubernetes.io/name
+this value can be shadowed by OTEL_SERVICE_NAME</p>
 </td>
 </tr>
 <tr>
@@ -62,7 +67,9 @@ string
 <td>
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a>
+if all Propagator didn&rsquo;t set, set the default value
+default={tracecontext, baggage}</p>
 </td>
 </tr>
 <tr>
@@ -89,7 +96,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Metrics defines whether to enable metrics</p>
+<p>Metrics defines whether to enable metrics
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -101,7 +110,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Logs defines whether to enable logs</p>
+<p>Logs defines whether to enable logs
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 </tbody>
@@ -135,17 +146,6 @@ string
 </tr>
 <tr>
 <td>
-<code>goTarget</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<p>GoTarget defines the executable target to instrument</p>
-</td>
-</tr>
-<tr>
-<td>
 <code>sampler</code><br/>
 <em>
 string
@@ -153,7 +153,8 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type
+<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value
+default=parentbased_traceidratio
 ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
 </td>
 </tr>
@@ -166,7 +167,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable
+if all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value
+default=&ldquo;0.01&rdquo;</p>
 </td>
 </tr>
 <tr>
@@ -178,7 +181,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Tracer defines the tracer type</p>
+<p>Tracer defines the tracer type
+if all tracer value didn&rsquo;t set, set default value
+default=otlp</p>
 </td>
 </tr>
 <tr>
@@ -190,7 +195,10 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>ServiceNameLabel defines the label key used to define the service name</p>
+<p>ServiceNameLabel defines the label key used to define the service name
+if all value didn&rsquo;t set, set default value
+default=app.kubernetes.io/name
+this value can be shadowed by OTEL_SERVICE_NAME</p>
 </td>
 </tr>
 <tr>
@@ -203,7 +211,9 @@ string
 <td>
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a>
+if all Propagator didn&rsquo;t set, set the default value
+default={tracecontext, baggage}</p>
 </td>
 </tr>
 <tr>
@@ -230,7 +240,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Metrics defines whether to enable metrics</p>
+<p>Metrics defines whether to enable metrics
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -242,7 +254,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Logs defines whether to enable logs</p>
+<p>Logs defines whether to enable logs
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 </tbody>
@@ -307,7 +321,8 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type
+<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value
+default=parentbased_traceidratio
 ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
 </td>
 </tr>
@@ -320,7 +335,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable
+if all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value
+default=&ldquo;0.01&rdquo;</p>
 </td>
 </tr>
 <tr>
@@ -332,7 +349,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Tracer defines the tracer type</p>
+<p>Tracer defines the tracer type
+if all tracer value didn&rsquo;t set, set default value
+default=otlp</p>
 </td>
 </tr>
 <tr>
@@ -344,7 +363,10 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>ServiceNameLabel defines the label key used to define the service name</p>
+<p>ServiceNameLabel defines the label key used to define the service name
+if all value didn&rsquo;t set, set default value
+default=app.kubernetes.io/name
+this value can be shadowed by OTEL_SERVICE_NAME</p>
 </td>
 </tr>
 <tr>
@@ -357,7 +379,9 @@ string
 <td>
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a>
+if all Propagator didn&rsquo;t set, set the default value
+default={tracecontext, baggage}</p>
 </td>
 </tr>
 <tr>
@@ -384,7 +408,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Metrics defines whether to enable metrics</p>
+<p>Metrics defines whether to enable metrics
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -396,7 +422,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Logs defines whether to enable logs</p>
+<p>Logs defines whether to enable logs
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -476,7 +504,8 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type
+<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value
+default=parentbased_traceidratio
 ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
 </td>
 </tr>
@@ -489,7 +518,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable
+if all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value
+default=&ldquo;0.01&rdquo;</p>
 </td>
 </tr>
 <tr>
@@ -501,7 +532,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Tracer defines the tracer type</p>
+<p>Tracer defines the tracer type
+if all tracer value didn&rsquo;t set, set default value
+default=otlp</p>
 </td>
 </tr>
 <tr>
@@ -513,7 +546,10 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>ServiceNameLabel defines the label key used to define the service name</p>
+<p>ServiceNameLabel defines the label key used to define the service name
+if all value didn&rsquo;t set, set default value
+default=app.kubernetes.io/name
+this value can be shadowed by OTEL_SERVICE_NAME</p>
 </td>
 </tr>
 <tr>
@@ -526,7 +562,9 @@ string
 <td>
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a>
+if all Propagator didn&rsquo;t set, set the default value
+default={tracecontext, baggage}</p>
 </td>
 </tr>
 <tr>
@@ -553,7 +591,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Metrics defines whether to enable metrics</p>
+<p>Metrics defines whether to enable metrics
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -565,7 +605,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Logs defines whether to enable logs</p>
+<p>Logs defines whether to enable logs
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -650,7 +692,8 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type
+<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value
+default=parentbased_traceidratio
 ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
 </td>
 </tr>
@@ -663,7 +706,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable
+if all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value
+default=&ldquo;0.01&rdquo;</p>
 </td>
 </tr>
 <tr>
@@ -675,7 +720,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Tracer defines the tracer type</p>
+<p>Tracer defines the tracer type
+if all tracer value didn&rsquo;t set, set default value
+default=otlp</p>
 </td>
 </tr>
 <tr>
@@ -687,7 +734,10 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>ServiceNameLabel defines the label key used to define the service name</p>
+<p>ServiceNameLabel defines the label key used to define the service name
+if all value didn&rsquo;t set, set default value
+default=app.kubernetes.io/name
+this value can be shadowed by OTEL_SERVICE_NAME</p>
 </td>
 </tr>
 <tr>
@@ -700,7 +750,9 @@ string
 <td>
 <em>(Optional)</em>
 <p>Propagator defines the propagation type, comma-separated list of propagators
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a>
+if all Propagator didn&rsquo;t set, set the default value
+default={tracecontext, baggage}</p>
 </td>
 </tr>
 <tr>
@@ -727,7 +779,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Metrics defines whether to enable metrics</p>
+<p>Metrics defines whether to enable metrics
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -739,7 +793,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Logs defines whether to enable logs</p>
+<p>Logs defines whether to enable logs
+if all value didn&rsquo;t set, set default value
+default=none</p>
 </td>
 </tr>
 <tr>
@@ -781,7 +837,8 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type
+<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value
+default=parentbased_traceidratio
 ref:<a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler</a></p>
 </td>
 </tr>
@@ -794,7 +851,9 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1]</p>
+<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable
+if all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value
+default=&ldquo;0.01&rdquo;</p>
 </td>
 </tr>
 </tbody>

@@ -109,7 +109,6 @@ func (r *Instrumentation) ValidateObject() error {
 		}
 	}
 
-	if consts.
 	return nil
 }
 
