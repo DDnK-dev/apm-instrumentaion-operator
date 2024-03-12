@@ -49,19 +49,23 @@ type InstrumentationSpec struct {
 // Configuration defines the common configuration for all instrumentation
 type Configuration struct {
 	// Tracer defines the tracer type
-	// +kubebuilder:default=otlp
+	// if all tracer value didn't set, set default value
+	// default=otlp
 	// +kubebuilder:validation:Enum=none;otlp;jaeger;zipkin;logging
 	// +optional
 	Tracer string `json:"tracer,omitempty"`
 
 	// ServiceNameLabel defines the label key used to define the service name
-	// +kubebuilder:default=app.kubernetes.io/name
+	// if all value didn't set, set default value
+	// default=app.kubernetes.io/name
+	// this value can be shadowed by OTEL_SERVICE_NAME
 	// +optional
 	ServiceNameLabel string `json:"serviceNameLabel,omitempty"`
 
 	// Propagator defines the propagation type, comma-separated list of propagators
 	// ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
-	// +kubebuilder:default={tracecontext,baggage}
+	// if all Propagator didn't set, set the default value
+	// default={tracecontext, baggage}
 	// +optional
 	Propagator []string `json:"propagator,omitempty"`
 
@@ -71,33 +75,37 @@ type Configuration struct {
 	EnvVars []corev1.EnvVar `json:"envVars,omitempty"`
 
 	// Metrics defines whether to enable metrics
-	// +kubebuilder:default=none
+	// if all value didn't set, set default value
+	// default=none
 	// +kubebuilder:validation:Enum=none;otlp;logging;prometheus
 	// +optional
 	Metrics string `json:"metrics,omitempty"`
 
 	// Logs defines whether to enable logs
-	// +kubebuilder:default=none
+	// if all value didn't set, set default value
+	// default=none
 	// +kubebuilder:validation:Enum=none;otlp;logging
 	// +optional
 	Logs string `json:"logs,omitempty"`
 }
 
 type Sampling struct {
-	// Sampler defines the sampler type
+	// Sampler defines the sampler type, if all samplers didn't set, set default value
+	// default=parentbased_traceidratio
 	// ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
-	// +kubebuilder:default=parentbased_traceidratio
 	// +optional
 	Sampler string `json:"sampler,omitempty"`
 
-	// SamplerArg defines the sampler argument [0...1]
-	// +kubebuilder:default="0.01"
+	// SamplerArg defines the sampler argument [0...1], which is set to target application as env variable
+	// if all sampler args didn't set, sampler type is dtraceidratio or parentbased_traceidratio, set default value
+	// default="0.01"
 	// +optional
 	SamplerArg string `json:"samplerArg,omitempty"`
 }
 
 type Java struct {
 	// Image is a container image with javaagent auto-instrumentation JAR.
+	// +kubebuilder:default="otel/autoinstrumentation-java:latest"
 	// +optional
 	Image string `json:"image,omitempty"`
 
@@ -121,10 +129,6 @@ type Go struct {
 	// Endpoint defines the endpoint to send the data to
 	// +optional
 	Endpoint string `json:"endpoint,omitempty"`
-
-	// GoTarget defines the executable target to instrument
-	// +kubebuilder:required
-	GoTarget string `json:"goTarget"`
 
 	// Sampling defines the sampling configuration
 	Sampling Sampling `json:",inline"`

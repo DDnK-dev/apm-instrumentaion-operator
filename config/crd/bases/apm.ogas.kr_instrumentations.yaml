@@ -268,20 +268,17 @@ spec:
                       - name
                       type: object
                     type: array
-                  goTarget:
-                    description: GoTarget defines the executable target to instrument
-                    type: string
                   logs:
-                    default: none
-                    description: Logs defines whether to enable logs
+                    description: Logs defines whether to enable logs if all value
+                      didn't set, set default value default=none
                     enum:
                     - none
                     - otlp
                     - logging
                     type: string
                   metrics:
-                    default: none
-                    description: Metrics defines whether to enable metrics
+                    description: Metrics defines whether to enable metrics if all
+                      value didn't set, set default value default=none
                     enum:
                     - none
                     - otlp
@@ -289,30 +286,33 @@ spec:
                     - prometheus
                     type: string
                   propagator:
-                    default:
-                    - tracecontext
-                    - baggage
                     description: 'Propagator defines the propagation type, comma-separated
-                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
+                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
+                      if all Propagator didn''t set, set the default value default={tracecontext,
+                      baggage}'
                     items:
                       type: string
                     type: array
                   sampler:
-                    default: parentbased_traceidratio
-                    description: Sampler defines the sampler type ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                    description: Sampler defines the sampler type, if all samplers
+                      didn't set, set default value default=parentbased_traceidratio
+                      ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
                     type: string
                   samplerArg:
-                    default: "0.01"
-                    description: SamplerArg defines the sampler argument [0...1]
+                    description: SamplerArg defines the sampler argument [0...1],
+                      which is set to target application as env variable if all sampler
+                      args didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
+                      set default value default="0.01"
                     type: string
                   serviceNameLabel:
-                    default: app.kubernetes.io/name
                     description: ServiceNameLabel defines the label key used to define
-                      the service name
+                      the service name if all value didn't set, set default value
+                      default=app.kubernetes.io/name this value can be shadowed by
+                      OTEL_SERVICE_NAME
                     type: string
                   tracer:
-                    default: otlp
-                    description: Tracer defines the tracer type
+                    description: Tracer defines the tracer type if all tracer value
+                      didn't set, set default value default=otlp
                     enum:
                     - none
                     - otlp
@@ -320,8 +320,6 @@ spec:
                     - zipkin
                     - logging
                     type: string
-                required:
-                - goTarget
                 type: object
               java:
                 properties:
@@ -445,6 +443,7 @@ spec:
                       type: object
                     type: array
                   image:
+                    default: otel/autoinstrumentation-java:latest
                     description: Image is a container image with javaagent auto-instrumentation
                       JAR.
                     type: string
@@ -453,16 +452,16 @@ spec:
                       kubebuilder:validation:Enum=simple;none;application
                     type: string
                   logs:
-                    default: none
-                    description: Logs defines whether to enable logs
+                    description: Logs defines whether to enable logs if all value
+                      didn't set, set default value default=none
                     enum:
                     - none
                     - otlp
                     - logging
                     type: string
                   metrics:
-                    default: none
-                    description: Metrics defines whether to enable metrics
+                    description: Metrics defines whether to enable metrics if all
+                      value didn't set, set default value default=none
                     enum:
                     - none
                     - otlp
@@ -470,30 +469,33 @@ spec:
                     - prometheus
                     type: string
                   propagator:
-                    default:
-                    - tracecontext
-                    - baggage
                     description: 'Propagator defines the propagation type, comma-separated
-                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
+                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
+                      if all Propagator didn''t set, set the default value default={tracecontext,
+                      baggage}'
                     items:
                       type: string
                     type: array
                   sampler:
-                    default: parentbased_traceidratio
-                    description: Sampler defines the sampler type ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                    description: Sampler defines the sampler type, if all samplers
+                      didn't set, set default value default=parentbased_traceidratio
+                      ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
                     type: string
                   samplerArg:
-                    default: "0.01"
-                    description: SamplerArg defines the sampler argument [0...1]
+                    description: SamplerArg defines the sampler argument [0...1],
+                      which is set to target application as env variable if all sampler
+                      args didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
+                      set default value default="0.01"
                     type: string
                   serviceNameLabel:
-                    default: app.kubernetes.io/name
                     description: ServiceNameLabel defines the label key used to define
-                      the service name
+                      the service name if all value didn't set, set default value
+                      default=app.kubernetes.io/name this value can be shadowed by
+                      OTEL_SERVICE_NAME
                     type: string
                   tracer:
-                    default: otlp
-                    description: Tracer defines the tracer type
+                    description: Tracer defines the tracer type if all tracer value
+                      didn't set, set default value default=otlp
                     enum:
                     - none
                     - otlp
@@ -503,16 +505,16 @@ spec:
                     type: string
                 type: object
               logs:
-                default: none
-                description: Logs defines whether to enable logs
+                description: Logs defines whether to enable logs if all value didn't
+                  set, set default value default=none
                 enum:
                 - none
                 - otlp
                 - logging
                 type: string
               metrics:
-                default: none
-                description: Metrics defines whether to enable metrics
+                description: Metrics defines whether to enable metrics if all value
+                  didn't set, set default value default=none
                 enum:
                 - none
                 - otlp
@@ -520,30 +522,31 @@ spec:
                 - prometheus
                 type: string
               propagator:
-                default:
-                - tracecontext
-                - baggage
                 description: 'Propagator defines the propagation type, comma-separated
-                  list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
+                  list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
+                  if all Propagator didn''t set, set the default value default={tracecontext,
+                  baggage}'
                 items:
                   type: string
                 type: array
               sampler:
-                default: parentbased_traceidratio
-                description: Sampler defines the sampler type ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                description: Sampler defines the sampler type, if all samplers didn't
+                  set, set default value default=parentbased_traceidratio ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
                 type: string
               samplerArg:
-                default: "0.01"
-                description: SamplerArg defines the sampler argument [0...1]
+                description: SamplerArg defines the sampler argument [0...1], which
+                  is set to target application as env variable if all sampler args
+                  didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
+                  set default value default="0.01"
                 type: string
               serviceNameLabel:
-                default: app.kubernetes.io/name
                 description: ServiceNameLabel defines the label key used to define
-                  the service name
+                  the service name if all value didn't set, set default value default=app.kubernetes.io/name
+                  this value can be shadowed by OTEL_SERVICE_NAME
                 type: string
               tracer:
-                default: otlp
-                description: Tracer defines the tracer type
+                description: Tracer defines the tracer type if all tracer value didn't
+                  set, set default value default=otlp
                 enum:
                 - none
                 - otlp
