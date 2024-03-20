@@ -47,7 +47,6 @@ type Configuration struct {
 	// Tracer defines the tracer type.
 	// If all tracer value didn't set, set default value.
 	// [ default=otlp ]
-	// +kubebuilder:validation:Enum=none;otlp;jaeger;zipkin;logging
 	// +optional
 	Tracer string `json:"tracer,omitempty"`
 
@@ -72,14 +71,12 @@ type Configuration struct {
 	// Metrics defines whether to enable metrics.
 	// If all value didn't set, set default value.
 	// [ default=none ]
-	// +kubebuilder:validation:Enum=none;otlp;logging;prometheus
 	// +optional
 	Metrics string `json:"metrics,omitempty"`
 
 	// Logs defines whether to enable logs.
 	// If all value didn't set, set default value.
 	// [ default=none ]
-	// +kubebuilder:validation:Enum=none;otlp;logging
 	// +optional
 	Logs string `json:"logs,omitempty"`
 }
@@ -88,6 +85,7 @@ type Sampling struct {
 	// Sampler defines the sampler type, if all samplers didn't set, set default value.
 	// [ default=parentbased_traceidratio ]
 	// ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+	// kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray
 	// +optional
 	Sampler string `json:"sampler,omitempty"`
 
@@ -100,7 +98,7 @@ type Sampling struct {
 
 type Java struct {
 	// Image is a container image with javaagent auto-instrumentation JAR.
-	// +kubebuilder:default="otel/autoinstrumentation-java:latest"
+	// kubebuilder:default="otel/autoinstrumentation-java:latest"
 	// +optional
 	Image string `json:"image,omitempty"`
 
@@ -112,7 +110,7 @@ type Java struct {
 	Sampling Sampling `json:",inline"`
 
 	// Configuration defines the common configuration for all instrumentation.
-	Configuration `json:",inline"`
+	Config Configuration `json:",inline"`
 
 	// Logging defines the logging configuration.
 	// kubebuilder:default=simple

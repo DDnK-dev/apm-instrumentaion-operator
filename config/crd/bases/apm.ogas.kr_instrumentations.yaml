@@ -38,8 +38,8 @@ spec:
                 description: Endpoint defines the endpoint to send the data to
                 type: string
               envVars:
-                description: envVars defines the environment variables to inject If
-                  there is already an env var with the same name, it will be skipped
+                description: EnvVars defines the environment variables to inject.
+                  If there is already an env var with the same name, it will be skipped.
                 items:
                   description: EnvVar represents an environment variable present in
                     a Container.
@@ -150,12 +150,12 @@ spec:
               go:
                 properties:
                   endpoint:
-                    description: Endpoint defines the endpoint to send the data to
+                    description: Endpoint defines the endpoint to send the data to.
                     type: string
                   envVars:
-                    description: envVars defines the environment variables to inject
+                    description: EnvVars defines the environment variables to inject.
                       If there is already an env var with the same name, it will be
-                      skipped
+                      skipped.
                     items:
                       description: EnvVar represents an environment variable present
                         in a Container.
@@ -269,67 +269,52 @@ spec:
                       type: object
                     type: array
                   logs:
-                    description: Logs defines whether to enable logs if all value
-                      didn't set, set default value default=none
-                    enum:
-                    - none
-                    - otlp
-                    - logging
+                    description: Logs defines whether to enable logs. If all value
+                      didn't set, set default value. [ default=none ]
                     type: string
                   metrics:
-                    description: Metrics defines whether to enable metrics if all
-                      value didn't set, set default value default=none
-                    enum:
-                    - none
-                    - otlp
-                    - logging
-                    - prometheus
+                    description: Metrics defines whether to enable metrics. If all
+                      value didn't set, set default value. [ default=none ]
                     type: string
                   propagator:
                     description: 'Propagator defines the propagation type, comma-separated
-                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
-                      if all Propagator didn''t set, set the default value default={tracecontext,
-                      baggage}'
+                      list of propagators. If all Propagator didn''t set, set the
+                      default value. [ default={tracecontext, baggage} ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
                     items:
                       type: string
                     type: array
                   sampler:
-                    description: Sampler defines the sampler type, if all samplers
-                      didn't set, set default value default=parentbased_traceidratio
-                      ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                    description: 'Sampler defines the sampler type, if all samplers
+                      didn''t set, set default value. [ default=parentbased_traceidratio
+                      ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+                      kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
                     type: string
                   samplerArg:
                     description: SamplerArg defines the sampler argument [0...1],
-                      which is set to target application as env variable if all sampler
+                      which is set to target application as env variable. If all sampler
                       args didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
-                      set default value default="0.01"
+                      set default value. [ default="0.01" ]
                     type: string
                   serviceNameLabel:
                     description: ServiceNameLabel defines the label key used to define
-                      the service name if all value didn't set, set default value
-                      default=app.kubernetes.io/name this value can be shadowed by
-                      OTEL_SERVICE_NAME
+                      the service name. If all value didn't set, set default value.
+                      This value can be shadowed by OTEL_SERVICE_NAME [ default=app.kubernetes.io/name
+                      ]
                     type: string
                   tracer:
-                    description: Tracer defines the tracer type if all tracer value
-                      didn't set, set default value default=otlp
-                    enum:
-                    - none
-                    - otlp
-                    - jaeger
-                    - zipkin
-                    - logging
+                    description: Tracer defines the tracer type. If all tracer value
+                      didn't set, set default value. [ default=otlp ]
                     type: string
                 type: object
               java:
                 properties:
                   endpoint:
-                    description: Endpoint defines the endpoint to send the data to
+                    description: Endpoint defines the endpoint to send the data to.
                     type: string
                   envVars:
-                    description: envVars defines the environment variables to inject
+                    description: EnvVars defines the environment variables to inject.
                       If there is already an env var with the same name, it will be
-                      skipped
+                      skipped.
                     items:
                       description: EnvVar represents an environment variable present
                         in a Container.
@@ -443,116 +428,87 @@ spec:
                       type: object
                     type: array
                   image:
-                    default: otel/autoinstrumentation-java:latest
                     description: Image is a container image with javaagent auto-instrumentation
-                      JAR.
+                      JAR. kubebuilder:default="otel/autoinstrumentation-java:latest"
                     type: string
                   logging:
-                    description: Logging defines the logging configuration kubebuilder:default=simple
+                    description: Logging defines the logging configuration. kubebuilder:default=simple
                       kubebuilder:validation:Enum=simple;none;application
                     type: string
                   logs:
-                    description: Logs defines whether to enable logs if all value
-                      didn't set, set default value default=none
-                    enum:
-                    - none
-                    - otlp
-                    - logging
+                    description: Logs defines whether to enable logs. If all value
+                      didn't set, set default value. [ default=none ]
                     type: string
                   metrics:
-                    description: Metrics defines whether to enable metrics if all
-                      value didn't set, set default value default=none
-                    enum:
-                    - none
-                    - otlp
-                    - logging
-                    - prometheus
+                    description: Metrics defines whether to enable metrics. If all
+                      value didn't set, set default value. [ default=none ]
                     type: string
                   propagator:
                     description: 'Propagator defines the propagation type, comma-separated
-                      list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
-                      if all Propagator didn''t set, set the default value default={tracecontext,
-                      baggage}'
+                      list of propagators. If all Propagator didn''t set, set the
+                      default value. [ default={tracecontext, baggage} ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
                     items:
                       type: string
                     type: array
                   sampler:
-                    description: Sampler defines the sampler type, if all samplers
-                      didn't set, set default value default=parentbased_traceidratio
-                      ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                    description: 'Sampler defines the sampler type, if all samplers
+                      didn''t set, set default value. [ default=parentbased_traceidratio
+                      ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+                      kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
                     type: string
                   samplerArg:
                     description: SamplerArg defines the sampler argument [0...1],
-                      which is set to target application as env variable if all sampler
+                      which is set to target application as env variable. If all sampler
                       args didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
-                      set default value default="0.01"
+                      set default value. [ default="0.01" ]
                     type: string
                   serviceNameLabel:
                     description: ServiceNameLabel defines the label key used to define
-                      the service name if all value didn't set, set default value
-                      default=app.kubernetes.io/name this value can be shadowed by
-                      OTEL_SERVICE_NAME
+                      the service name. If all value didn't set, set default value.
+                      This value can be shadowed by OTEL_SERVICE_NAME [ default=app.kubernetes.io/name
+                      ]
                     type: string
                   tracer:
-                    description: Tracer defines the tracer type if all tracer value
-                      didn't set, set default value default=otlp
-                    enum:
-                    - none
-                    - otlp
-                    - jaeger
-                    - zipkin
-                    - logging
+                    description: Tracer defines the tracer type. If all tracer value
+                      didn't set, set default value. [ default=otlp ]
                     type: string
                 type: object
               logs:
-                description: Logs defines whether to enable logs if all value didn't
-                  set, set default value default=none
-                enum:
-                - none
-                - otlp
-                - logging
+                description: Logs defines whether to enable logs. If all value didn't
+                  set, set default value. [ default=none ]
                 type: string
               metrics:
-                description: Metrics defines whether to enable metrics if all value
-                  didn't set, set default value default=none
-                enum:
-                - none
-                - otlp
-                - logging
-                - prometheus
+                description: Metrics defines whether to enable metrics. If all value
+                  didn't set, set default value. [ default=none ]
                 type: string
               propagator:
                 description: 'Propagator defines the propagation type, comma-separated
-                  list of propagators ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
-                  if all Propagator didn''t set, set the default value default={tracecontext,
-                  baggage}'
+                  list of propagators. If all Propagator didn''t set, set the default
+                  value. [ default={tracecontext, baggage} ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator'
                 items:
                   type: string
                 type: array
               sampler:
-                description: Sampler defines the sampler type, if all samplers didn't
-                  set, set default value default=parentbased_traceidratio ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
+                description: 'Sampler defines the sampler type, if all samplers didn''t
+                  set, set default value. [ default=parentbased_traceidratio ] ref:
+                  https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+                  kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
                 type: string
               samplerArg:
                 description: SamplerArg defines the sampler argument [0...1], which
-                  is set to target application as env variable if all sampler args
+                  is set to target application as env variable. If all sampler args
                   didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
-                  set default value default="0.01"
+                  set default value. [ default="0.01" ]
                 type: string
               serviceNameLabel:
                 description: ServiceNameLabel defines the label key used to define
-                  the service name if all value didn't set, set default value default=app.kubernetes.io/name
-                  this value can be shadowed by OTEL_SERVICE_NAME
+                  the service name. If all value didn't set, set default value. This
+                  value can be shadowed by OTEL_SERVICE_NAME [ default=app.kubernetes.io/name
+                  ]
                 type: string
               tracer:
-                description: Tracer defines the tracer type if all tracer value didn't
-                  set, set default value default=otlp
-                enum:
-                - none
-                - otlp
-                - jaeger
-                - zipkin
-                - logging
+                description: Tracer defines the tracer type. If all tracer value didn't
+                  set, set default value. [ default=otlp ]
                 type: string
             required:
             - endpoint

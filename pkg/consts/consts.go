@@ -55,6 +55,16 @@ const (
 	APMVolumeName = "ogas-instrument"
 )
 
+// Image Constants
+const (
+	APMImageJava = "otel/autoinstrumentation-java:latest"
+)
+
+// Java Configs
+const (
+	LoggingSimple = "simple"
+)
+
 // Common Trace Environment Variables
 const (
 	EnvExporterEndpoint = "OTEL_EXPORTER_OTLP_ENDPOINT"
