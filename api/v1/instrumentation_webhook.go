@@ -17,14 +17,17 @@ limitations under the License.
 package v1
 
 import (
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
+	"fmt"
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
+	"strconv"
+
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 )
 
 // log is for logging in this package.
@@ -44,28 +47,9 @@ var _ webhook.Defaulter = &Instrumentation{}
 // Default implements webhook.Defaulter so a webhook will be registered for the type
 func (r *Instrumentation) Default() {
 	instrumentationlog.Info("default", "name", r.Name)
-	if r.Spec.Sampling.Sampler == "" {
-		r.Spec.Sampling.Sampler = "parentbased_traceidratio"
-	}
-	if r.Spec.Sampling.SamplerArg == "" && utils.In(r.Spec.Sampling.Sampler,
-		consts.TraceIdRatioBasedSampler, consts.ParentBasedTraceIdRatioBasedSampler) {
-		r.Spec.Sampling.SamplerArg = "0.1"
-	}
-	if r.Spec.Configuration.Tracer == "" {
-		r.Spec.Configuration.Tracer = "otlp"
-	}
-	if r.Spec.Configuration.ServiceNameLabel == "" {
-		r.Spec.Configuration.ServiceNameLabel = "app.kubernetes.io/name"
-	}
-	if len(r.Spec.Configuration.Propagator) == 0 {
-		r.Spec.Configuration.Propagator = []string{consts.B3Propagator, consts.JaegerPropagator}
-	}
-	if r.Spec.Configuration.Metrics == "" {
-		r.Spec.Configuration.Metrics = "none"
-	}
-	if r.Spec.Configuration.Logs == "" {
-		r.Spec.Configuration.Logs = "none"
-	}
+	r.Spec.Sampling.defaulter()
+	r.Spec.Configuration.defaulter()
+	r.Spec.Java.defaulter()
 }
 
 //+kubebuilder:webhook:path=/validate-apm-ogas-kr-v1-instrumentation,mutating=false,failurePolicy=fail,sideEffects=None,groups=apm.ogas.kr,resources=instrumentations,verbs=create;update,versions=v1,name=vinstrumentation.kb.io,admissionReviewVersions=v1
@@ -75,13 +59,34 @@ var _ webhook.Validator = &Instrumentation{}
 // ValidateCreate implements webhook.Validator so a webhook will be registered for the type
 func (r *Instrumentation) ValidateCreate() (admission.Warnings, error) {
 	instrumentationlog.Info("validate create", "name", r.Name)
-	return nil, nil
+	return r.validate()
 }
 
 // ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
-func (r *Instrumentation) ValidateUpdate(old runtime.Object) (admission.Warnings, error) {
+func (r *Instrumentation) ValidateUpdate(_ runtime.Object) (admission.Warnings, error) {
 	instrumentationlog.Info("validate update", "name", r.Name)
-	return nil, nil
+	return r.validate()
+}
+
+// validate validates if Instrumentation object fulfill
+func (r *Instrumentation) validate() (admission.Warnings, error) {
+	warning := admission.Warnings{}
+	if r.Spec.Endpoint == "" {
+		return admission.Warnings{}, errors.New("spec.endpoint must be specified")
+	}
+	if r.Spec.Sampling.validate() != nil {
+		warning = append(warning, "spec.sampling must be valid")
+		return admission.Warnings{}, errors.New("spec.sampling must be valid")
+	}
+	if r.Spec.Configuration.validate() != nil {
+		warning = append(warning, "spec.configuration must be valid")
+		return admission.Warnings{}, errors.New("spec.configuration must be valid")
+	}
+	if r.Spec.Java.validate() != nil {
+		warning = append(warning, "spec.java must be valid")
+		return admission.Warnings{}, errors.New("spec.java must be valid")
+	}
+	return admission.Warnings{}, nil
 }
 
 func (r *Instrumentation) ValidateObject() error {
@@ -108,9 +113,82 @@ func (r *Instrumentation) ValidateObject() error {
 			}
 		}
 	}
-
 	return nil
 }
 
 // ValidateDelete implements webhook.Validator so a webhook will be registered for the type
 func (r *Instrumentation) ValidateDelete() (admission.Warnings, error) { return nil, nil }
+
+func (s *Sampling) defaulter() {
+	if s.Sampler == "" {
+		s.Sampler = consts.ParentBasedTraceIdRatioBasedSampler
+	}
+	if consts.RateSamplerSet.IsInSet(s.Sampler) && s.SamplerArg == "" {
+		s.SamplerArg = consts.DefaultSamplingRate
+	}
+}
+
+func (s *Sampling) validate() error {
+	if _, err := strconv.ParseFloat(s.SamplerArg, 32); err != nil {
+		return fmt.Errorf("samplerArg must be a number, got %s", s.SamplerArg)
+	}
+	return nil
+}
+
+func (c *Configuration) defaulter() {
+	if c.Tracer == "" {
+		c.Tracer = consts.OtlpTExporter
+	}
+	if c.ServiceNameLabel == "" {
+		c.ServiceNameLabel = consts.DefaultServiceNameLabel
+	}
+	if len(c.Propagator) == 0 {
+		c.Propagator = []string{consts.TraceContextPropagator, consts.BaggagePropagator}
+	}
+	if c.Metrics == "" {
+		c.Metrics = consts.NoneMExporter
+	}
+	if c.Logs == "" {
+		c.Logs = consts.NoneLExporter
+	}
+}
+
+func (c *Configuration) validate() error {
+	if c.Tracer != "" && consts.TraceExporterSet.NotInSet(c.Tracer) {
+		return errors.Wrap(consts.ErrNotValid, "tracer")
+	}
+	for _, prop := range c.Propagator {
+		if prop != "" && consts.PropagatorSet.NotInSet(prop) {
+			return errors.Wrap(consts.ErrNotValid, "propagator: "+prop)
+		}
+	}
+	if c.Metrics != "" && consts.MetricExporterSet.NotInSet(c.Metrics) {
+		return errors.Wrap(consts.ErrNotValid, "metrics")
+	}
+	if c.Logs != "" && consts.LogExporterSet.NotInSet(c.Logs) {
+		return errors.Wrap(consts.ErrNotValid, "logs")
+	}
+	return nil
+}
+
+func (j *Java) defaulter() {
+	if j.Image == "" {
+		j.Image = consts.APMImageJava
+	}
+	if j.Logging == "" {
+		j.Logging = consts.LoggingSimple
+	}
+}
+
+func (j *Java) validate() error {
+	if err := j.Sampling.validate(); err != nil {
+		return err
+	}
+	if err := j.Config.validate(); err != nil {
+		return err
+	}
+	if j.Logging != "" && consts.JavaLoggingSet.NotInSet(j.Logging) {
+		return errors.Wrap(consts.ErrNotValid, "java-logging")
+	}
+	return nil
+}

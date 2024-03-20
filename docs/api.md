@@ -154,7 +154,8 @@ string
 <em>(Optional)</em>
 <p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
 [ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
+kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
 </td>
 </tr>
 <tr>
@@ -321,7 +322,8 @@ string
 <em>(Optional)</em>
 <p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
 [ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
+kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
 </td>
 </tr>
 <tr>
@@ -503,7 +505,8 @@ string
 <em>(Optional)</em>
 <p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
 [ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
+kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
 </td>
 </tr>
 <tr>
@@ -664,7 +667,8 @@ string
 </td>
 <td>
 <em>(Optional)</em>
-<p>Image is a container image with javaagent auto-instrumentation JAR.</p>
+<p>Image is a container image with javaagent auto-instrumentation JAR.
+kubebuilder:default=&ldquo;otel/autoinstrumentation-java:latest&rdquo;</p>
 </td>
 </tr>
 <tr>
@@ -690,7 +694,8 @@ string
 <em>(Optional)</em>
 <p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
 [ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
+kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
 </td>
 </tr>
 <tr>
@@ -834,7 +839,8 @@ string
 <em>(Optional)</em>
 <p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
 [ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a></p>
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
+kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
 </td>
 </tr>
 <tr>

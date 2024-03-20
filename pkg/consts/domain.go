@@ -13,6 +13,12 @@ func (v ValidationSet) NotInSet(s string) bool {
 	return !v.IsInSet(s)
 }
 
+// default values
+const (
+	DefaultServiceNameLabel = "app.kubernetes.io/name"
+	DefaultSamplingRate     = "0.01"
+)
+
 // defines samplers
 const (
 	AlwaysOnSampler                     = "always_on"
@@ -37,6 +43,11 @@ var SamplerSet = ValidationSet{
 	ParentBasedJaegerRemoteSampler:      {},
 	JaegerRemoteSampler:                 {},
 	XRaySampler:                         {},
+}
+
+var RateSamplerSet = ValidationSet{
+	TraceIdRatioBasedSampler:            {},
+	ParentBasedTraceIdRatioBasedSampler: {},
 }
 
 // defines propagators
@@ -80,7 +91,15 @@ var TraceExporterSet = ValidationSet{
 // define metrics exporters
 const (
 	OtlpMExporter = "otlp"
+	PromMExporter = "prometheus"
+	NoneMExporter = "none"
 )
+
+var MetricExporterSet = ValidationSet{
+	OtlpMExporter: {},
+	PromMExporter: {},
+	NoneMExporter: {},
+}
 
 //"otlp": OTLP
 //"jaeger": export in Jaeger data model
@@ -92,3 +111,26 @@ const (
 //"otlp": OTLP
 //"prometheus": Prometheus
 //"none": No automatically configured exporter for metrics.
+
+// defines logging exporter
+const (
+	OtlpLExporter = "otlp"
+	NoneLExporter = "none"
+)
+
+var LogExporterSet = ValidationSet{
+	OtlpLExporter: {},
+	NoneLExporter: {},
+}
+
+const (
+	OtelJavaLoggingSimple = "simple"
+	OtelJavaLoggingNone   = "none"
+	OtelJavaLoggingApp    = "application"
+)
+
+var JavaLoggingSet = ValidationSet{
+	OtelJavaLoggingSimple: {},
+	OtelJavaLoggingNone:   {},
+	OtelJavaLoggingApp:    {},
+}
