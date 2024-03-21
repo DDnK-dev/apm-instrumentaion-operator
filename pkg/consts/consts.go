@@ -12,12 +12,6 @@ const (
 
 // Annotation Keys
 const (
-	// InstAnnotationInstrumented is annotation key used to specify that which container is instrumented
-	// At the end of mutation, this annotation will be used to check if there is duplicated mutation
-	// As the limit of annotation value is 256 kb, this annotation will be used to check if the pod is already instrumented
-	// It will be deleted after mutation
-	InstAnnotationInstrumented = domain + "/injected-container"
-
 	// instInjectKey is the annotation key used to specify the containers that have to be instrumented
 	instInjectKey                = domain + "/inject"
 	InstAnnotationKeyJava        = instInjectKey + "-java"

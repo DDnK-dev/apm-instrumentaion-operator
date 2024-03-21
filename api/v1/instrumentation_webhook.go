@@ -129,8 +129,13 @@ func (s *Sampling) defaulter() {
 }
 
 func (s *Sampling) validate() error {
-	if _, err := strconv.ParseFloat(s.SamplerArg, 32); err != nil {
-		return fmt.Errorf("samplerArg must be a number, got %s", s.SamplerArg)
+	if s.Sampler != "" && consts.SamplerSet.NotInSet(s.Sampler) {
+		return errors.Wrap(consts.ErrNotValid, "sampler")
+	}
+	if s.SamplerArg != "" {
+		if _, err := strconv.ParseFloat(s.SamplerArg, 32); err != nil {
+			return fmt.Errorf("samplerArg must be a number, got %s", s.SamplerArg)
+		}
 	}
 	return nil
 }
@@ -181,8 +186,10 @@ func (j *Java) defaulter() {
 }
 
 func (j *Java) validate() error {
-	if err := j.Sampling.validate(); err != nil {
-		return err
+	if j.Sampling.Sampler != "" || j.Sampling.SamplerArg != "" {
+		if err := j.Sampling.validate(); err != nil {
+			return err
+		}
 	}
 	if err := j.Config.validate(); err != nil {
 		return err
