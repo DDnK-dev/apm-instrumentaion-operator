@@ -1,13 +1,13 @@
 package java
 
 import (
-	v1 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/autoinstrument/instrument"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 
+	v1 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/autoinstrument/instrument"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 )
 
 const (
@@ -19,36 +19,24 @@ const (
 	javaVolumeLimit       = "200Mi"
 )
 
-func injectCommonSettings(spec *v1.InstrumentationSpec, pod *corev1.Pod, index int) (*corev1.Pod, error) {
-	container = &pod.Spec.Containers[index]
-
-	container = injectConfig(spec.Config, container)
-
-	// set endpoint to pod
-	// 일단 걍 넣는거임ㅎㅎ;;
-
-	//container.Env = append(container.Env, corev1.EnvVar{
-	//	Name:  "OTEL_EXPORTER_OTLP_ENDPOINT",
-	//	Value: spec.Endpoint,
-	//}
-	// endpoint
-	// sampler
-	// sampler arg
-	// tracer
-	// serviceNameLabel
-	// propagator
-	// metrics
-	// logs
-
-	return pod, nil
-}
-
-func injectConfig(config *v1.Configuration, container *corev1.Container) *corev1.Container {
-	if config.Endpoint != "" {
-
+// initJavaSpec initializes Java instrumentation spec from the given spec
+func initJavaSpec(spec *v1.InstrumentationSpec) (*v1.Java, error) {
+	var (
+		jSpec = spec.Java
+	)
+	if jSpec.Endpoint == "" {
+		jSpec.Endpoint = spec.Endpoint
 	}
-
-	return container
+	// sampling setting and validation
+	if jSpec.Sampling.Sampler == "" && jSpec.Sampling.SamplerArg == "" {
+		jSpec.Sampling = spec.Sampling
+	}
+	conf, err := instrument.OverrideConfiguration(&spec.Configuration, &jSpec.Config)
+	if err != nil {
+		return nil, err
+	}
+	jSpec.Config = *conf
+	return &jSpec, nil
 }
 
 func injectJavaagent(jSpec *v1.Java, pod *corev1.Pod, index int) (*corev1.Pod, error) {
@@ -71,7 +59,7 @@ func injectJavaagent(jSpec *v1.Java, pod *corev1.Pod, index int) (*corev1.Pod, e
 	}
 	// inject Java instrumentation spec env vars.
 	// if there is already an env var with the same name, it will be skipped
-	for _, env := range jSpec.EnvVars {
+	for _, env := range jSpec.Config.EnvVars {
 		if idx := instrument.GetEnvVarIndex(pod.Spec.Containers[index], env.Name); idx == -1 {
 			pod.Spec.Containers[index].Env = append(pod.Spec.Containers[index].Env, env)
 		}

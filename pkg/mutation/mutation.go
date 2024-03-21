@@ -8,14 +8,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
+
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
-	"net/http"
 
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
+
+// validate if PodHandler implements admission.Handler
+var _ admission.Handler = &PodHandler{}
 
 // PodHandler implements admission.DecoderInjector.
 // +kubebuilder:webhook:path=/mutate-v1-pod,mutating=true,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=mpod.kb.io
