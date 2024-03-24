@@ -3,7 +3,6 @@ package instrument
 import (
 	"context"
 	"errors"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 	"strings"
 
 	corev1 "k8s.io/api/core/v1"
@@ -12,6 +11,7 @@ import (
 
 	v1 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 )
 
 // GetContainerIndex returns container index from pod. Index indicates the position of the container in the pod.

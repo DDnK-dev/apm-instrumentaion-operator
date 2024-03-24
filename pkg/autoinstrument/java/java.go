@@ -2,7 +2,6 @@ package java
 
 import (
 	"context"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation/type"
 
 	"github.com/pkg/errors"
 	corev1 "k8s.io/api/core/v1"
@@ -11,26 +10,27 @@ import (
 	v1 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/autoinstrument/instrument"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation/types"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 )
 
 // verify javaInjector implements mutation.Injector
-var _ _type.Injector = &Injector{}
+var _ types.Injector = &Injector{}
 
 // Mutator implements mutation.Injector
 // this is the struct that implements the Mutator interface
 type Injector struct {
 	Client client.Client
-	Plan   *_type.Plan
+	Plan   *types.Plan
 }
 
-func NewInjector() _type.Injector {
+func NewInjector() types.Injector {
 	return &Injector{}
 }
 
 // TODO: need error handling and logging
-func (i *Injector) PlanMutation(pod *corev1.Pod, labelMap utils.LabelMap) *_type.Plan {
-	p := &_type.Plan{}
+func (i *Injector) PlanMutation(pod *corev1.Pod, labelMap utils.LabelMap) *types.Plan {
+	p := &types.Plan{}
 	value, ok := labelMap.GetLabelValue(consts.InstAnnotationKeyJava)
 	if !ok {
 		return p
@@ -48,16 +48,16 @@ func (i *Injector) PlanMutation(pod *corev1.Pod, labelMap utils.LabelMap) *_type
 	return p
 }
 
-func (i *Injector) SetClient(c client.Client) _type.Injector {
+func (i *Injector) SetClient(c client.Client) types.Injector {
 	i.Client = c
 	return i
 }
 
-func (i *Injector) SetPlan(plan *_type.Plan) {
+func (i *Injector) SetPlan(plan *types.Plan) {
 	i.Plan = plan
 }
 
-func (i *Injector) GetPlan() *_type.Plan {
+func (i *Injector) GetPlan() *types.Plan {
 	return i.Plan
 }
 

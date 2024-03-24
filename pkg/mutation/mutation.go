@@ -13,7 +13,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
-
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
@@ -21,6 +20,7 @@ import (
 // validate if PodHandler implements admission.Handler
 var _ admission.Handler = &PodHandler{}
 
+// nolint:all
 // PodHandler implements admission.DecoderInjector.
 // +kubebuilder:webhook:path=/mutate-v1-pod,mutating=true,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=mpod.kb.io
 type PodHandler struct {
@@ -32,7 +32,11 @@ type PodHandler struct {
 // Handle function handles admission request from kubernetes api server
 // and check if pod is mutation target, then validates, process pod mutation
 func (p *PodHandler) Handle(ctx context.Context, req admission.Request) admission.Response {
-	pod := &corev1.Pod{}
+	var (
+		pod     = &corev1.Pod{}
+		mutator = &PodMutator{}
+	)
+
 	err := p.decoder.Decode(req, pod)
 	if err != nil {
 		p.Recorder.Event(pod, "Warning", "Decoding",
@@ -51,7 +55,11 @@ func (p *PodHandler) Handle(ctx context.Context, req admission.Request) admissio
 		return res
 	}
 
-	mutator := PodMutator{pod: pod}
+	if mutator, err = NewPodMutator(pod, p.Client); err != nil {
+		p.Recorder.Event(pod, "Warning", "Mutator",
+			fmt.Sprintf("Failed to create pod mutator becaues of error %v", err))
+		return admission.Errored(http.StatusInternalServerError, err)
+	}
 	pod, err = mutator.Mutate(ctx)
 	if err != nil {
 		p.Recorder.Event(pod, "Normal", "Mutating",

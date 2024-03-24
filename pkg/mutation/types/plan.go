@@ -1,4 +1,4 @@
-package _type
+package types
 
 import (
 	v1 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"

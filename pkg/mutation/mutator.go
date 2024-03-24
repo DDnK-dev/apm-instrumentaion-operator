@@ -8,7 +8,7 @@ import (
 
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/autoinstrument/java"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation/type"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation/types"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 )
 
@@ -16,11 +16,11 @@ import (
 type PodMutator struct {
 	pod      *corev1.Pod
 	client   client.Client
-	mutators []_type.Injector
+	mutators []types.Injector
 }
 
 func NewPodMutator(pod *corev1.Pod, client client.Client) (*PodMutator, error) {
-	mutators := []_type.Injector{
+	mutators := []types.Injector{
 		java.NewInjector(),
 	}
 	return &PodMutator{
@@ -40,13 +40,13 @@ func (p *PodMutator) Mutate(ctx context.Context) (*corev1.Pod, error) {
 	for _, mutator := range p.mutators {
 		mutator.SetClient(p.client).SetPlan(mutator.PlanMutation(p.pod, lMap))
 	}
-	ctx, cancel := context.WithCancel(context.Background())
+	cctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	var err error
 	for _, mutator := range p.mutators {
 		if checkMutatorActive(mutator) {
-			p.pod, err = mutator.Mutate(ctx, p.pod)
+			p.pod, err = mutator.Mutate(cctx, p.pod)
 			if err != nil {
 				return nil, err
 			}
@@ -71,6 +71,6 @@ func isAlreadyInstrumented(pod *corev1.Pod) bool {
 	return false
 }
 
-func checkMutatorActive(mutator _type.Injector) bool {
+func checkMutatorActive(mutator types.Injector) bool {
 	return mutator.GetPlan().Instrumentation != nil && mutator.GetPlan().Containers != nil
 }
