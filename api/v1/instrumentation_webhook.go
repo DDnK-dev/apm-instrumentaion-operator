@@ -18,13 +18,14 @@ package v1
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/pkg/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
-	"strconv"
 
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
@@ -72,21 +73,21 @@ func (r *Instrumentation) ValidateUpdate(_ runtime.Object) (admission.Warnings, 
 func (r *Instrumentation) validate() (admission.Warnings, error) {
 	warning := admission.Warnings{}
 	if r.Spec.Endpoint == "" {
-		return admission.Warnings{}, errors.New("spec.endpoint must be specified")
+		return warning, errors.New("spec.endpoint must be specified")
 	}
 	if r.Spec.Sampling.validate() != nil {
 		warning = append(warning, "spec.sampling must be valid")
-		return admission.Warnings{}, errors.New("spec.sampling must be valid")
+		return warning, errors.New("spec.sampling must be valid")
 	}
 	if r.Spec.Configuration.validate() != nil {
 		warning = append(warning, "spec.configuration must be valid")
-		return admission.Warnings{}, errors.New("spec.configuration must be valid")
+		return warning, errors.New("spec.configuration must be valid")
 	}
 	if r.Spec.Java.validate() != nil {
 		warning = append(warning, "spec.java must be valid")
-		return admission.Warnings{}, errors.New("spec.java must be valid")
+		return warning, errors.New("spec.java must be valid")
 	}
-	return admission.Warnings{}, nil
+	return warning, nil
 }
 
 func (r *Instrumentation) ValidateObject() error {

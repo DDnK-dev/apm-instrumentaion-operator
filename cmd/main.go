@@ -18,23 +18,20 @@ package main
 
 import (
 	"flag"
-	v12 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation"
 	"os"
-	"sigs.k8s.io/controller-runtime/pkg/webhook"
-
-	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
-	// to ensure that exec-entrypoint and run can make use of them.
-	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
-	//+kubebuilder:scaffold:imports
+	"sigs.k8s.io/controller-runtime/pkg/webhook"
+
+	v12 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation"
 )
 
 var (
@@ -78,7 +75,8 @@ func main() {
 		os.Exit(1)
 	}
 	mgr.GetEventRecorderFor("instrumentation-controller")
-	mgr.GetWebhookServer().Register("/mutate-v1-pod", &webhook.Admission{Handler: &mutation.PodHandler{Client: mgr.GetClient()}})
+	mgr.GetWebhookServer().Register("/mutate-v1-pod",
+		&webhook.Admission{Handler: &mutation.PodHandler{Client: mgr.GetClient()}})
 
 	if os.Getenv("ENABLE_WEBHOOKS") != "false" {
 		if err = (&v12.Instrumentation{}).SetupWebhookWithManager(mgr); err != nil {
