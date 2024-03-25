@@ -32,7 +32,7 @@ type InstrumentationSpec struct {
 	// Sampling defines the sampling configuration.
 	// Root configuration may be overridden by each instrumentation
 	// +optional
-	Sampling Sampling `json:"sampling"`
+	Sampling Sampling `json:"sampling,omitempty"`
 
 	// Configuration defines the common configuration for all instrumentation.
 	// Root configuration may be overridden by each instrumentation
@@ -109,7 +109,7 @@ type Java struct {
 
 	// Sampling defines the sampling configuration.
 	// +optional
-	Sampling Sampling `json:"sampling"`
+	Sampling Sampling `json:"sampling,omitempty"`
 
 	// Configuration defines the common configuration for all instrumentation.
 	Config Configuration `json:",inline"`
@@ -127,7 +127,7 @@ type Go struct {
 
 	// Sampling defines the sampling configuration.
 	// +optional
-	Sampling Sampling `json:"sampling"`
+	Sampling Sampling `json:"sampling,omitempty"`
 
 	// Configuration defines the common configuration for all instrumentation.
 	Configuration `json:",inline"`

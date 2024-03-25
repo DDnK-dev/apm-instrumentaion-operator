@@ -145,31 +145,16 @@ string
 </tr>
 <tr>
 <td>
-<code>sampler</code><br/>
+<code>sampling</code><br/>
 <em>
-string
+<a href="#apm.ogas.kr/v1.Sampling">
+Sampling
+</a>
 </em>
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
-[ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
-kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable.
-If all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value.
-[ default=&ldquo;0.01&rdquo; ]</p>
+<p>Sampling defines the sampling configuration.</p>
 </td>
 </tr>
 <tr>
@@ -313,31 +298,17 @@ string
 </tr>
 <tr>
 <td>
-<code>sampler</code><br/>
+<code>sampling</code><br/>
 <em>
-string
+<a href="#apm.ogas.kr/v1.Sampling">
+Sampling
+</a>
 </em>
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
-[ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
-kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable.
-If all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value.
-[ default=&ldquo;0.01&rdquo; ]</p>
+<p>Sampling defines the sampling configuration.
+Root configuration may be overridden by each instrumentation</p>
 </td>
 </tr>
 <tr>
@@ -496,31 +467,17 @@ string
 </tr>
 <tr>
 <td>
-<code>sampler</code><br/>
+<code>sampling</code><br/>
 <em>
-string
+<a href="#apm.ogas.kr/v1.Sampling">
+Sampling
+</a>
 </em>
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
-[ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
-kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable.
-If all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value.
-[ default=&ldquo;0.01&rdquo; ]</p>
+<p>Sampling defines the sampling configuration.
+Root configuration may be overridden by each instrumentation</p>
 </td>
 </tr>
 <tr>
@@ -685,31 +642,16 @@ string
 </tr>
 <tr>
 <td>
-<code>sampler</code><br/>
+<code>sampling</code><br/>
 <em>
-string
+<a href="#apm.ogas.kr/v1.Sampling">
+Sampling
+</a>
 </em>
 </td>
 <td>
 <em>(Optional)</em>
-<p>Sampler defines the sampler type, if all samplers didn&rsquo;t set, set default value.
-[ default=parentbased_traceidratio ]
-ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)</a>
-kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray</p>
-</td>
-</tr>
-<tr>
-<td>
-<code>samplerArg</code><br/>
-<em>
-string
-</em>
-</td>
-<td>
-<em>(Optional)</em>
-<p>SamplerArg defines the sampler argument [0&hellip;1], which is set to target application as env variable.
-If all sampler args didn&rsquo;t set, sampler type is dtraceidratio or parentbased_traceidratio, set default value.
-[ default=&ldquo;0.01&rdquo; ]</p>
+<p>Sampling defines the sampling configuration.</p>
 </td>
 </tr>
 <tr>
