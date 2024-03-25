@@ -194,5 +194,8 @@ gen-doc: ## generate api specification documentation
 
 .PHONY: test-sample
 test-sample: ## test deploy test using config/samples
-	kubectl apply -f config/samples
+	$(KUSTOMIZE) build config/samples | $(KUBECTL) apply -f -
 
+.PHONY: remove-sample
+remove-sample: ## remove test deploys to clean test environment
+	$(KUSTOMIZE) build config/samples | $(KUBECTL) delete --ignore-not-found=$(ignore-not-found) -f -

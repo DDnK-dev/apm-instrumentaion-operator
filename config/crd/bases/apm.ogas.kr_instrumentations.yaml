@@ -283,18 +283,23 @@ spec:
                     items:
                       type: string
                     type: array
-                  sampler:
-                    description: 'Sampler defines the sampler type, if all samplers
-                      didn''t set, set default value. [ default=parentbased_traceidratio
-                      ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
-                      kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
-                    type: string
-                  samplerArg:
-                    description: SamplerArg defines the sampler argument [0...1],
-                      which is set to target application as env variable. If all sampler
-                      args didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
-                      set default value. [ default="0.01" ]
-                    type: string
+                  sampling:
+                    description: Sampling defines the sampling configuration.
+                    properties:
+                      sampler:
+                        description: 'Sampler defines the sampler type, if all samplers
+                          didn''t set, set default value. [ default=parentbased_traceidratio
+                          ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+                          kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
+                        type: string
+                      samplerArg:
+                        description: SamplerArg defines the sampler argument [0...1],
+                          which is set to target application as env variable. If all
+                          sampler args didn't set, sampler type is dtraceidratio or
+                          parentbased_traceidratio, set default value. [ default="0.01"
+                          ]
+                        type: string
+                    type: object
                   serviceNameLabel:
                     description: ServiceNameLabel defines the label key used to define
                       the service name. If all value didn't set, set default value.
@@ -450,18 +455,23 @@ spec:
                     items:
                       type: string
                     type: array
-                  sampler:
-                    description: 'Sampler defines the sampler type, if all samplers
-                      didn''t set, set default value. [ default=parentbased_traceidratio
-                      ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
-                      kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
-                    type: string
-                  samplerArg:
-                    description: SamplerArg defines the sampler argument [0...1],
-                      which is set to target application as env variable. If all sampler
-                      args didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
-                      set default value. [ default="0.01" ]
-                    type: string
+                  sampling:
+                    description: Sampling defines the sampling configuration.
+                    properties:
+                      sampler:
+                        description: 'Sampler defines the sampler type, if all samplers
+                          didn''t set, set default value. [ default=parentbased_traceidratio
+                          ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+                          kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
+                        type: string
+                      samplerArg:
+                        description: SamplerArg defines the sampler argument [0...1],
+                          which is set to target application as env variable. If all
+                          sampler args didn't set, sampler type is dtraceidratio or
+                          parentbased_traceidratio, set default value. [ default="0.01"
+                          ]
+                        type: string
+                    type: object
                   serviceNameLabel:
                     description: ServiceNameLabel defines the label key used to define
                       the service name. If all value didn't set, set default value.
@@ -488,18 +498,23 @@ spec:
                 items:
                   type: string
                 type: array
-              sampler:
-                description: 'Sampler defines the sampler type, if all samplers didn''t
-                  set, set default value. [ default=parentbased_traceidratio ] ref:
-                  https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
-                  kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
-                type: string
-              samplerArg:
-                description: SamplerArg defines the sampler argument [0...1], which
-                  is set to target application as env variable. If all sampler args
-                  didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
-                  set default value. [ default="0.01" ]
-                type: string
+              sampling:
+                description: Sampling defines the sampling configuration. Root configuration
+                  may be overridden by each instrumentation
+                properties:
+                  sampler:
+                    description: 'Sampler defines the sampler type, if all samplers
+                      didn''t set, set default value. [ default=parentbased_traceidratio
+                      ] ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+                      kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray'
+                    type: string
+                  samplerArg:
+                    description: SamplerArg defines the sampler argument [0...1],
+                      which is set to target application as env variable. If all sampler
+                      args didn't set, sampler type is dtraceidratio or parentbased_traceidratio,
+                      set default value. [ default="0.01" ]
+                    type: string
+                type: object
               serviceNameLabel:
                 description: ServiceNameLabel defines the label key used to define
                   the service name. If all value didn't set, set default value. This
