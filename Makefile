@@ -80,6 +80,10 @@ lint: golangci-lint ## Run golangci-lint linter & yamllint
 lint-fix: golangci-lint ## Run golangci-lint linter and perform fixes
 	$(GOLANGCI_LINT) run --fix
 
+.PHONY: git-template
+git-template: ## Add commit template setting to local git config
+	git config --local commit.template ./.github/commit-template.txt
+
 ##@ Build
 
 .PHONY: build
@@ -188,7 +192,7 @@ cert-manager: ## Download and set-up cert-manager on kubernetes if necessary
 gen-doc: ## generate api specification documentation
 	bin/gen-crd-api-reference-docs \
         -config "scripts/documentation/gen-doc-config.json" \
-        -api-dir "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1" \
+        -api-dir "./api/v1" \
         -template-dir "scripts/documentation/template" \
         -out-file docs/api.md
 
