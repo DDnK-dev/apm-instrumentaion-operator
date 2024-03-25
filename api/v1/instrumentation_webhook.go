@@ -51,6 +51,8 @@ func (r *Instrumentation) Default() {
 	r.Spec.Sampling.defaulter()
 	r.Spec.Configuration.defaulter()
 	r.Spec.Java.defaulter()
+	// just for debugging, print all the fields
+	instrumentationlog.Info("default", "name", r.Name, "spec", r.Spec)
 }
 
 //+kubebuilder:webhook:path=/validate-apm-ogas-kr-v1-instrumentation,mutating=false,failurePolicy=fail,sideEffects=None,groups=apm.ogas.kr,resources=instrumentations,verbs=create;update,versions=v1,name=vinstrumentation.kb.io,admissionReviewVersions=v1
@@ -121,10 +123,14 @@ func (r *Instrumentation) ValidateObject() error {
 func (r *Instrumentation) ValidateDelete() (admission.Warnings, error) { return nil, nil }
 
 func (s *Sampling) defaulter() {
+	instrumentationlog.Info("default", "name", s.Sampler)
 	if s.Sampler == "" {
+		instrumentationlog.Info("default sampler", "name", s.Sampler)
 		s.Sampler = consts.ParentBasedTraceIdRatioBasedSampler
 	}
+	instrumentationlog.Info("samplerArg", "name", s.SamplerArg)
 	if consts.RateSamplerSet.IsInSet(s.Sampler) && s.SamplerArg == "" {
+		instrumentationlog.Info("default samplerArg", "name", s.SamplerArg)
 		s.SamplerArg = consts.DefaultSamplingRate
 	}
 }
