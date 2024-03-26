@@ -2,6 +2,7 @@ package mutation
 
 import (
 	"context"
+	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -36,13 +37,14 @@ func (p *PodMutator) Mutate(ctx context.Context) (*corev1.Pod, error) {
 	}
 
 	// inject label validation -> if there is no inject label, we need to skip the pod
-	lMap := utils.NewLabelMap(p.pod)
+	lMap := utils.NewAnnotationMap(p.pod)
 	for _, mutator := range p.mutators {
 		mutator.SetClient(p.client).SetPlan(mutator.PlanMutation(p.pod, lMap))
 	}
 	cctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	fmt.Printf("PodMutator.Mutate") // TODO: delete this line
 	var err error
 	for _, mutator := range p.mutators {
 		if checkMutatorActive(mutator) {
@@ -72,5 +74,7 @@ func isAlreadyInstrumented(pod *corev1.Pod) bool {
 }
 
 func checkMutatorActive(mutator types.Injector) bool {
-	return mutator.GetPlan().Instrumentation != nil && mutator.GetPlan().Containers != nil
+	return mutator.GetPlan() != nil &&
+		mutator.GetPlan().Instrumentation != nil &&
+		mutator.GetPlan().Containers != nil
 }

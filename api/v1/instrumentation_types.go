@@ -134,13 +134,11 @@ type Go struct {
 }
 
 // InstrumentationStatus defines the observed state of Instrumentation
-type InstrumentationStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-}
+type InstrumentationStatus struct{}
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:resource:shortName=inst
 
 // Instrumentation is the Schema for the instrumentations API
 type Instrumentation struct {

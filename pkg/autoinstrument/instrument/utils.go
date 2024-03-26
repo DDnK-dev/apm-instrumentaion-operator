@@ -25,7 +25,7 @@ func GetContainerIndex(pod *corev1.Pod, container string) int {
 	return -1
 }
 
-func GetEnvVarIndex(container corev1.Container, envKey string) (index int) {
+func GetEnvVarIndex(container *corev1.Container, envKey string) (index int) {
 	for i, env := range container.Env {
 		if env.Name == envKey {
 			return i
@@ -81,15 +81,15 @@ func GetInstrumentFromAnnotation(value string, cli client.Client) (*v1.Instrumen
 }
 
 // GetContainerNameFromAnnotation returns container names from annotation value
-func GetContainerNameFromAnnotation(pod *corev1.Pod, l *utils.LabelMap, key string) ([]string, error) {
+func GetContainerNameFromAnnotation(pod *corev1.Pod, l *utils.AnnotationMap, key string) ([]string, error) {
 	// 1. if container-names exists, check container names are valid and return values (ignores key)
-	containerNames, ok := l.GetLabelValue(consts.InstAnnotationKeyContName)
+	containerNames, ok := l.GetAnnotationValue(consts.InstAnnotationKeyContName)
 	if ok && containerNames != "" {
 		return CheckContainerName(pod, containerNames)
 	}
 	// 2. if container-names does not exist, and annotation with key exists,
 	// check if container names are valid and return values
-	containerNames, ok = l.GetLabelValue(key)
+	containerNames, ok = l.GetAnnotationValue(key)
 	if ok && containerNames != "" {
 		return CheckContainerName(pod, containerNames)
 	}
@@ -131,6 +131,12 @@ func OverrideConfiguration(base *v1.Configuration, lang *v1.Configuration) (*v1.
 	}
 	if len(lang.EnvVars) == 0 {
 		lang.EnvVars = base.EnvVars
+	}
+	if lang.Metrics == "" {
+		lang.Metrics = base.Metrics
+	}
+	if lang.Logs == "" {
+		lang.Logs = base.Logs
 	}
 	return lang, nil
 }

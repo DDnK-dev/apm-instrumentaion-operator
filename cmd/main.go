@@ -29,6 +29,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
+	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 
 	v12 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation"
@@ -46,10 +47,14 @@ func init() {
 	//+kubebuilder:scaffold:scheme
 }
 
+//+kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch;create;update;patch
+//+kubebuilder:rbac:groups="",resources=events,verbs=create;patch
+//+kubebuilder:rbac:groups="apm.ogas.kr",resources=instrumentations,verbs=get;list;watch
+
 func main() {
 	var metricsAddr string
-	var enableLeaderElection bool
 	var probeAddr string
+	var enableLeaderElection bool
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
@@ -76,7 +81,10 @@ func main() {
 	}
 	mgr.GetEventRecorderFor("instrumentation-controller")
 	mgr.GetWebhookServer().Register("/mutate-v1-pod",
-		&webhook.Admission{Handler: &mutation.PodHandler{Client: mgr.GetClient()}})
+		&webhook.Admission{Handler: &mutation.PodHandler{Client: mgr.GetClient(),
+			Recorder: mgr.GetEventRecorderFor("instrumentation-controller"),
+			Decoder:  admission.NewDecoder(mgr.GetScheme())},
+		})
 
 	if os.Getenv("ENABLE_WEBHOOKS") != "false" {
 		if err = (&v12.Instrumentation{}).SetupWebhookWithManager(mgr); err != nil {
