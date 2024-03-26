@@ -28,20 +28,19 @@ func NewInjector() types.Injector {
 	return &Injector{}
 }
 
-// TODO: need error handling and logging
-func (i *Injector) PlanMutation(pod *corev1.Pod, labelMap utils.LabelMap) *types.Plan {
+func (i *Injector) PlanMutation(pod *corev1.Pod, annoMap utils.AnnotationMap) *types.Plan {
 	p := &types.Plan{}
-	value, ok := labelMap.GetLabelValue(consts.InstAnnotationKeyJava)
+	value, ok := annoMap.GetAnnotationValue(consts.InstAnnotationKeyJava)
 	if !ok {
 		return p
 	}
 	inst, err := instrument.GetInstrumentFromAnnotation(value, i.Client)
 	if err != nil {
-		return nil
+		return p
 	}
-	containers, err := instrument.GetContainerNameFromAnnotation(pod, &labelMap, consts.InstAnnotationKeyJavaCont)
+	containers, err := instrument.GetContainerNameFromAnnotation(pod, &annoMap, consts.InstAnnotationKeyJavaCont)
 	if err != nil {
-		return nil
+		return p
 	}
 	p.Instrumentation = inst
 	p.Containers = containers

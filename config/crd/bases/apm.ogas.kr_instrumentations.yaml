@@ -11,6 +11,8 @@ spec:
     kind: Instrumentation
     listKind: InstrumentationList
     plural: instrumentations
+    shortNames:
+    - inst
     singular: instrumentation
   scope: Namespaced
   versions:

@@ -20,12 +20,14 @@ import (
 // validate if PodHandler implements admission.Handler
 var _ admission.Handler = &PodHandler{}
 
-// nolint:all
+// nolint:lll
+//+kubebuilder:webhook:path=/mutate-v1-pod,mutating=true,failurePolicy=ignore,groups="",resources=pods,verbs=create,versions=v1,name=mpod.kb.io,admissionReviewVersions=v1,sideEffects=None
+//+kubebuilder:rbac:groups="",resources=namespaces,verbs=list;watch
+
 // PodHandler implements admission.DecoderInjector.
-// +kubebuilder:webhook:path=/mutate-v1-pod,mutating=true,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=mpod.kb.io
 type PodHandler struct {
 	Client   client.Client
-	decoder  *admission.Decoder
+	Decoder  *admission.Decoder
 	Recorder record.EventRecorder
 }
 
@@ -37,7 +39,7 @@ func (p *PodHandler) Handle(ctx context.Context, req admission.Request) admissio
 		mutator = &PodMutator{}
 	)
 
-	err := p.decoder.Decode(req, pod)
+	err := p.Decoder.Decode(req, pod)
 	if err != nil {
 		p.Recorder.Event(pod, "Warning", "Decoding",
 			fmt.Sprintf("Failed to decode pod from request becaues of error %v", err))

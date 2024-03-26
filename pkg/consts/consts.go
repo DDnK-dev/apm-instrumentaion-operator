@@ -65,16 +65,15 @@ const (
 	EnvTraceSampler     = "OTEL_TRACES_SAMPLER"
 	EnvTraceSamplerArg  = "OTEL_TRACES_SAMPLER_ARG"
 	EnvPropagators      = "OTEL_PROPAGATORS"
-	EnvResourceAttrs    = "OTEL_RESOURCE_ATTRIBUTES"
 	EnvServiceName      = "OTEL_SERVICE_NAME"
 	EnvTracesExporter   = "OTEL_TRACES_EXPORTER"
 	EnvMetricsExporter  = "OTEL_METRICS_EXPORTER"
 	EnvLogsExporter     = "OTEL_LOGS_EXPORTER"
+	EnvJavaAgentLogging = "OTEL_JAVAAGENT_LOGGING"
 )
 
 // Predefined Errors
 var (
-	ErrEndpointNotDefined = errors.New("endpoint is not defined")
-	ErrNotDefined         = errors.New("not defined")
-	ErrNotValid           = errors.New("not valid value")
+	ErrNotDefined = errors.New("not defined")
+	ErrNotValid   = errors.New("not valid value")
 )

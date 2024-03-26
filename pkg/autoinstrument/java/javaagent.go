@@ -1,6 +1,8 @@
 package java
 
 import (
+	"strings"
+
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 
@@ -39,31 +41,114 @@ func initJavaSpec(spec *v1.InstrumentationSpec) (*v1.Java, error) {
 	return &jSpec, nil
 }
 
+// TODO: check; if the injection process is halted by the error, pod shouldn't be modified.
 func injectJavaagent(jSpec *v1.Java, pod *corev1.Pod, index int) (*corev1.Pod, error) {
+	var (
+		idx       int
+		container *corev1.Container
+		err       error
+	)
 	// validateContainerEnv
 	// if JAVA_TOOL_OPTIONS has valuesFrom, we can't inject javaagent.
-	container := &pod.Spec.Containers[index]
-	{
-		idx, err := instrument.ValidateContainerEnv(container.Env, envJavaToolsOptions)
-		if err != nil {
-			return pod, err
+	container = &pod.Spec.Containers[index]
+	idx, err = instrument.ValidateContainerEnv(container.Env, envJavaToolsOptions)
+	if err != nil {
+		return pod, err
+	}
+	if idx == -1 { // if there is no javaTools Options env key
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  envJavaToolsOptions,
+			Value: javaJVMArgument,
+		})
+	} else {
+		container.Env[idx].Value = container.Env[idx].Value + javaJVMArgument
+	}
+
+	// set endpoint
+	// check if the endpoint is already set
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvExporterEndpoint); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvExporterEndpoint,
+			Value: jSpec.Endpoint,
+		})
+	}
+	// set sampling
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvTraceSampler); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvTraceSampler,
+			Value: jSpec.Sampling.Sampler,
+		})
+	}
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvTraceSamplerArg); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvTraceSamplerArg,
+			Value: jSpec.Sampling.SamplerArg,
+		})
+	}
+
+	// set java logging
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvJavaAgentLogging); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvJavaAgentLogging,
+			Value: jSpec.Logging,
+		})
+	}
+
+	// set Configuration
+	// set tracer
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvTracesExporter); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvTracesExporter,
+			Value: jSpec.Config.Tracer,
+		})
+	}
+
+	// set serviceNameLabel
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvServiceName); idx == -1 {
+		var serviceName string
+		if serviceName = pod.Labels[jSpec.Config.ServiceNameLabel]; serviceName == "" {
+			if pod.Name == "" {
+				serviceName = pod.GenerateName
+			} else {
+				serviceName = pod.Name
+			}
 		}
-		if idx == -1 { // if there is no javaTools Options env key
-			container.Env = append(container.Env, corev1.EnvVar{
-				Name:  envJavaToolsOptions,
-				Value: javaJVMArgument,
-			})
-		} else {
-			container.Env[idx].Value = container.Env[idx].Value + javaJVMArgument
-		}
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvServiceName,
+			Value: serviceName,
+		})
+	}
+
+	// set propagator
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvPropagators); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvPropagators,
+			Value: strings.Join(jSpec.Config.Propagator, ","),
+		})
+	}
+
+	// set metrics
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvMetricsExporter); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvMetricsExporter,
+			Value: jSpec.Config.Metrics,
+		})
+	}
+	// set logs
+	if idx = instrument.GetEnvVarIndex(container, consts.EnvLogsExporter); idx == -1 {
+		container.Env = append(container.Env, corev1.EnvVar{
+			Name:  consts.EnvLogsExporter,
+			Value: jSpec.Config.Logs,
+		})
 	}
 	// inject Java instrumentation spec env vars.
 	// if there is already an env var with the same name, it will be skipped
 	for _, env := range jSpec.Config.EnvVars {
-		if idx := instrument.GetEnvVarIndex(pod.Spec.Containers[index], env.Name); idx == -1 {
+		if idx = instrument.GetEnvVarIndex(&pod.Spec.Containers[index], env.Name); idx == -1 {
 			pod.Spec.Containers[index].Env = append(pod.Spec.Containers[index].Env, env)
 		}
 	}
+
 	// create new volume mount
 	container.VolumeMounts = append(container.VolumeMounts, corev1.VolumeMount{
 		Name:      javaVolumeName,
