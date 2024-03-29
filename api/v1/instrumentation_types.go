@@ -17,23 +17,25 @@ limitations under the License.
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // InstrumentationSpec defines the desired state of Instrumentation
 type InstrumentationSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
 	// Endpoint defines the endpoint to send the data to
 	// +kubebuilder:required
 	Endpoint string `json:"endpoint"`
 
-	// Configuration defines the common configuration for all instrumentation
-	// root configuration may be overridden by each instrumentation
+	// Sampling defines the sampling configuration.
+	// Root configuration may be overridden by each instrumentation
+	// +optional
+	Sampling Sampling `json:"sampling,omitempty"`
+
+	// Configuration defines the common configuration for all instrumentation.
+	// Root configuration may be overridden by each instrumentation
 	Configuration `json:",inline"`
 
 	Java Java `json:"java,omitempty"`
@@ -43,76 +45,100 @@ type InstrumentationSpec struct {
 
 // Configuration defines the common configuration for all instrumentation
 type Configuration struct {
-	// Tracer defines the tracer type
-	// +kubebuilder:default=otlp
-	// +kubebuilder:validation:Enum=none;otlp;jaeger;zipkin;logging
+	// Tracer defines the tracer type.
+	// If all tracer value didn't set, set default value.
+	// [ default=otlp ]
 	// +optional
 	Tracer string `json:"tracer,omitempty"`
 
-	// ServiceNameLabel defines the label key used to define the service name
-	// +kubebuilder:default=app.kubernetes.io/name
+	// ServiceNameLabel defines the label key used to define the service name.
+	// If all value didn't set, set default value. This value can be shadowed by OTEL_SERVICE_NAME
+	// [ default=app.kubernetes.io/name ]
+	// +optional
 	ServiceNameLabel string `json:"serviceNameLabel,omitempty"`
 
-	// Propagator defines the propagation type, comma-separated list of propagators
+	// Propagator defines the propagation type, comma-separated list of propagators.
+	// If all Propagator didn't set, set the default value.
+	// [ default={tracecontext, baggage} ]
 	// ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator
-	// +kubebuilder:default=tracecontext,baggage
-	Propagator string `json:"propagator,omitempty"`
+	// +optional
+	Propagator []string `json:"propagator,omitempty"`
 
-	// Sampler defines the sampler type
-	// ref:https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler
-	// +kubebuilder:default=parentbased_traceidratio
-	Sampler string `json:"sampler,omitempty"`
+	// EnvVars defines the environment variables to inject.
+	// If there is already an env var with the same name, it will be skipped.
+	// +optional
+	EnvVars []corev1.EnvVar `json:"envVars,omitempty"`
 
-	// SamplerArg defines the sampler argument [0...1]
-	// +kubebuilder:default=0.01
-	SamplerArg string `json:"samplerArg,omitempty"`
-
-	// Metrics defines whether to enable metrics
-	// +kubebuilder:default=none
-	// +kubebuilder:validation:Enum=none;otlp;logging;prometheus
+	// Metrics defines whether to enable metrics.
+	// If all value didn't set, set default value.
+	// [ default=none ]
+	// +optional
 	Metrics string `json:"metrics,omitempty"`
 
-	// Logs defines whether to enable logs
-	// +kubebuilder:default=none
-	// +kubebuilder:validation:Enum=none;otlp;logging
+	// Logs defines whether to enable logs.
+	// If all value didn't set, set default value.
+	// [ default=none ]
+	// +optional
 	Logs string `json:"logs,omitempty"`
 }
 
+type Sampling struct {
+	// Sampler defines the sampler type, if all samplers didn't set, set default value.
+	// [ default=parentbased_traceidratio ]
+	// ref: https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#sampler)
+	// kubebuilder:validation:Enum=always_on;always_off;traceidratio;parentbased_always_on;parentbased_always_off;parentbased_traceidratio;parentbased_jaeger_remote;jaeger_remote;xray
+	// +optional
+	Sampler string `json:"sampler,omitempty"`
+
+	// SamplerArg defines the sampler argument [0...1], which is set to target application as env variable.
+	// If all sampler args didn't set, sampler type is dtraceidratio or parentbased_traceidratio, set default value.
+	// [ default="0.01" ]
+	// +optional
+	SamplerArg string `json:"samplerArg,omitempty"`
+}
+
 type Java struct {
-	// Endpoint defines the endpoint to send the data to
+	// Image is a container image with javaagent auto-instrumentation JAR.
+	// kubebuilder:default="otel/autoinstrumentation-java:latest"
+	// +optional
+	Image string `json:"image,omitempty"`
+
+	// Endpoint defines the endpoint to send the data to.
 	// +optional
 	Endpoint string `json:"endpoint,omitempty"`
 
-	// Configuration defines the common configuration for all instrumentation
-	Configuration `json:",inline"`
+	// Sampling defines the sampling configuration.
+	// +optional
+	Sampling Sampling `json:"sampling,omitempty"`
 
-	// Logging defines the logging configuration
+	// Configuration defines the common configuration for all instrumentation.
+	Config Configuration `json:",inline"`
+
+	// Logging defines the logging configuration.
 	// kubebuilder:default=simple
 	// kubebuilder:validation:Enum=simple;none;application
 	Logging string `json:"logging,omitempty"`
 }
 
 type Go struct {
-	// Endpoint defines the endpoint to send the data to
+	// Endpoint defines the endpoint to send the data to.
 	// +optional
 	Endpoint string `json:"endpoint,omitempty"`
 
-	// GoTarget defines the executable target to instrument
-	// +kubebuilder:required
-	GoTarget string `json:"goTarget"`
+	// Sampling defines the sampling configuration.
+	// +optional
+	Sampling Sampling `json:"sampling,omitempty"`
 
-	// Configuration defines the common configuration for all instrumentation
+	// Configuration defines the common configuration for all instrumentation.
 	Configuration `json:",inline"`
 }
 
 // InstrumentationStatus defines the observed state of Instrumentation
-type InstrumentationStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-}
+type InstrumentationStatus struct{}
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:resource:shortName=inst
 
 // Instrumentation is the Schema for the instrumentations API
 type Instrumentation struct {

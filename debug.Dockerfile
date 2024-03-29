@@ -1,5 +1,5 @@
 # Build the manager binary
-FROM golang:1.22 as builder
+FROM wdk1994/golang-debug:1.22 as builder
 ARG TARGETOS
 ARG TARGETARCH
 
@@ -10,6 +10,7 @@ COPY go.sum go.sum
 # cache deps before building and copying source so that we don't need to re-download as much
 # and so that source changes don't invalidate our downloaded layer
 RUN go mod download
+RUN CGO_ENABLED=0 go install github.com/go-delve/delve/cmd/dlv@v1.22.0
 
 # Copy the go source
 COPY . ./
@@ -19,13 +20,9 @@ COPY . ./
 # was called. For example, if we call make docker-build in a local env which has the Apple Silicon M1 SO
 # the docker BUILDPLATFORM arg will be linux/arm64 when for Apple x86 it will be linux/amd64. Therefore,
 # by leaving it empty we can ensure that the container and binary shipped on it will have the same platform.
-RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build -a -o manager cmd/main.go
+RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build -gcflags "all=-N -l" -a -o manager cmd/main.go
 
-# Use distroless as minimal base image to package the manager binary
-# Refer to https://github.com/GoogleContainerTools/distroless for more details
-FROM gcr.io/distroless/static:nonroot
-WORKDIR /
-COPY --from=builder /workspace/manager .
 USER 65532:65532
 
-ENTRYPOINT ["/manager"]
+EXPOSE 12345
+ENTRYPOINT ["/go/bin/dlv", "--continue", "--listen=:12345", "--headless=true", "--api-version=2", "--accept-multiclient", "exec", "/workspace/manager"]

@@ -1,6 +1,6 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+IMG ?= wdk1994/apm-controller:latest
 # ENVTEST_K8S_VERSION refers to the version of kubebuilder assets to be downloaded by envtest binary.
 ENVTEST_K8S_VERSION = 1.28.0
 
@@ -80,6 +80,10 @@ lint: golangci-lint ## Run golangci-lint linter & yamllint
 lint-fix: golangci-lint ## Run golangci-lint linter and perform fixes
 	$(GOLANGCI_LINT) run --fix
 
+.PHONY: git-template
+git-template: ## Add commit template setting to local git config
+	git config --local commit.template ./.github/commit-template.txt
+
 ##@ Build
 
 .PHONY: build
@@ -101,6 +105,11 @@ docker-build: ## Build docker image with the manager.
 docker-push: ## Push docker image with the manager.
 	$(CONTAINER_TOOL) push ${IMG}
 
+.PHONY: docker-build-debug
+docker-build-debug: ## build docker image with the manager excuted by dlv
+	$(CONTAINER_TOOL) build -t $(IMG)-debug -f debug.Dockerfile .
+	$(CONTAINER_TOOL) push $(IMG)-debug
+
 # PLATFORMS defines the target platforms for the manager image be built to provide support to multiple
 # architectures. (i.e. make docker-buildx IMG=myregistry/mypoperator:0.0.1). To use this option you need to:
 # - be able to use docker buildx. More info: https://docs.docker.com/build/buildx/
@@ -115,6 +124,16 @@ docker-buildx: ## Build and push docker image for the manager for cross-platform
 	- $(CONTAINER_TOOL) buildx create --name project-v3-builder
 	$(CONTAINER_TOOL) buildx use project-v3-builder
 	- $(CONTAINER_TOOL) buildx build --push --platform=$(PLATFORMS) --tag ${IMG} -f Dockerfile.cross .
+	- $(CONTAINER_TOOL) buildx rm project-v3-builder
+	rm Dockerfile.cross
+
+.PHONY: docker-buildx-debug
+docker-buildx-debug: ## Build and push docker image for the manager for cross-platform with dlv debug support
+	# copy existing Dockerfile and insert --platform=${BUILDPLATFORM} into Dockerfile.cross, and preserve the original Dockerfile
+	sed -e '1 s/\(^FROM\)/FROM --platform=\$$\{BUILDPLATFORM\}/; t' -e ' 1,// s//FROM --platform=\$$\{BUILDPLATFORM\}/' debug.Dockerfile > Dockerfile.cross
+	- $(CONTAINER_TOOL) buildx create --name project-v3-builder
+	$(CONTAINER_TOOL) buildx use project-v3-builder
+	- $(CONTAINER_TOOL) buildx build --push --platform=$(PLATFORMS) --tag ${IMG}-debug -f Dockerfile.cross .
 	- $(CONTAINER_TOOL) buildx rm project-v3-builder
 	rm Dockerfile.cross
 
@@ -178,12 +197,24 @@ envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
 
+.PHONY: cert-manager
+cert-manager: ## Download and set-up cert-manager on kubernetes if necessary
+	$(KUBECTL) apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.yaml
+
 ##@ Utilities
 
 .PHONY: gen-doc
 gen-doc: ## generate api specification documentation
 	bin/gen-crd-api-reference-docs \
         -config "scripts/documentation/gen-doc-config.json" \
-        -api-dir "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1" \
+        -api-dir "./api/v1" \
         -template-dir "scripts/documentation/template" \
         -out-file docs/api.md
+
+.PHONY: test-sample
+test-sample: ## test deploy test using config/samples
+	$(KUSTOMIZE) build config/samples | $(KUBECTL) apply -f -
+
+.PHONY: remove-sample
+remove-sample: ## remove test deploys to clean test environment
+	$(KUSTOMIZE) build config/samples | $(KUBECTL) delete --ignore-not-found=$(ignore-not-found) -f -

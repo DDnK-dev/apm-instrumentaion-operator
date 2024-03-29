@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: java-app
+  name: java-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: java-app
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: java-app
+      annotations:
+        apm.ogas.kr/inject-java: "true"
+    spec:
+      containers::
+      - image: wdk1994/hello-world-java
+        name: hello-world-java
