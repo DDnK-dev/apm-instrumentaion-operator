@@ -25,8 +25,21 @@ kubebuilder create webhook --version v1 --group apm --kind Instrumentation --def
 
 ### Implementation points
 
-- [ ] Implement the `Instrumentation` CRD at `api/v1/instrumentation_types.go`
-- [ ] Implement the `Instrumentation` webhook at `api/v1/instrumentation_webhook.go`
-- [ ] Implement the `pod` webhook. This webhook will inject the sidecar container into the pod, but not generated from the
-      kubebuilder.
+- Define the `Instrumentation` CRD spec at `api/v1/instrumentation_types.go`
+- Implement the `defaulter` and `validator` at `api/v1/instrumentation_types.go`
+- Implement the `Instrumentation` webhook logic at `api/v1/instrumentation_webhook.go`
+- Add custom webhook to `main.go` if needed.
+- Generate Custom resource spec document using command `make gen-doc`
 
+### Branch Strategy
+
+This project follows common git-flow strategy
+
+![git-flow](image/branch.png)
+
+Image tag naming strategy is as follows:
+
+- `latest`: The latest image tag for the main branch.
+- `develop` : The latest image tag for the develop branch.
+- `vX.Y.Z` : The release tag for the branch `relX.Y.Z`
+- `#ISSUE_NUMBER` : The image tag for the feature branch end with the issue number.
