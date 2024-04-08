@@ -1,0 +1,72 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - '*/*-[0-9]+'
+      - 'rel[0-9].[0-9]+.[0-9]+'
+jobs:
+  test_go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5.0.0
+        with:
+          go-version: '1.22'
+      - uses: golangci/golangci-lint-action@v4
+        with:
+          version: v1.57
+          args: --config=.golangci.yml
+  build_dev:
+    runs-on: ubuntu-latest
+    if: |  # if ref is main || release, then skip this job
+      !(github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/rel'))
+      &&
+      !(startsWith(github.ref, 'refs/tags/'))
+    steps: # build and publish docker image
+      - uses: actions/checkout@v4
+        # if branch is */*-[0-9]+, then set TAG to [0-9]+
+      - run: |
+          if [[ $GITHUB_REF_NAME =~ .*/.*-[0-9]+ ]]; then
+            echo "feature branch"
+            echo "TAG=${GITHUB_REF_NAME##*-}">> $GITHUB_ENV
+          elif [[ $GITHUB_REF_NAME == "develop" ]]; then
+            echo "master branch"
+            echo "TAG=develop">> $GITHUB_ENV
+          else
+            echo "unknown branch"
+            echo "TAG=test">> $GITHUB_ENV
+          fi
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        name: Build Image
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - run: make docker-buildx-debug TAG=$TAG
+  build_prod:
+    runs-on: ubuntu-latest
+    if: |  # if ref is main || release, then skip this job
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/rel')))
+      ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+    steps: # build and publish docker image
+      - uses: actions/checkout@v4
+      - run: |
+          if [[ $GITHUB_REF_NAME =~ rel[0-9]+.[0-9].[0-9] ]]; then
+            echo "feature branch"
+            echo "TAG=v${GITHUB_REF_NAME##rel}">> $GITHUB_EN
+          elif [[ $GITHUB_REF_NAME == "main" ]]; then
+            echo "master branch"
+            echo "TAG=latest">> $GITHUB_ENV
+          else
+            echo "unknown branch"
+            echo "TAG=test">> $GITHUB_ENV
+          fi
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - run: make docker-buildx
