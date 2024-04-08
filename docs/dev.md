@@ -43,3 +43,4 @@ Image tag naming strategy is as follows:
 - `develop` : The latest image tag for the develop branch.
 - `vX.Y.Z` : The release tag for the branch `relX.Y.Z`
 - `#ISSUE_NUMBER` : The image tag for the feature branch end with the issue number.
+
