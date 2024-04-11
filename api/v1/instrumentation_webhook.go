@@ -51,6 +51,7 @@ func (r *Instrumentation) Default() {
 	r.Spec.Sampling.defaulter()
 	r.Spec.Configuration.defaulter()
 	r.Spec.Java.defaulter()
+	r.Spec.Python.defaulter()
 }
 
 //+kubebuilder:webhook:path=/validate-apm-ogas-kr-v1-instrumentation,mutating=false,failurePolicy=fail,sideEffects=None,groups=apm.ogas.kr,resources=instrumentations,verbs=create;update,versions=v1,name=vinstrumentation.kb.io,admissionReviewVersions=v1
@@ -86,6 +87,10 @@ func (r *Instrumentation) validate() (admission.Warnings, error) {
 	if r.Spec.Java.validate() != nil {
 		warning = append(warning, "spec.java must be valid")
 		return warning, errors.New("spec.java must be valid")
+	}
+	if r.Spec.Python.validate() != nil {
+		warning = append(warning, "spec.python must be valid")
+		return warning, errors.New("spec.python must be valid")
 	}
 	return warning, nil
 }
@@ -197,6 +202,24 @@ func (j *Java) validate() error {
 	}
 	if j.Logging != "" && consts.JavaLoggingSet.NotInSet(j.Logging) {
 		return errors.Wrap(consts.ErrNotValid, "java-logging")
+	}
+	return nil
+}
+
+func (p *Python) defaulter() {
+	if p.Image == "" {
+		p.Image = consts.APMImagePython
+	}
+}
+
+func (p *Python) validate() error {
+	if p.Sampling.Sampler != "" || p.Sampling.SamplerArg != "" {
+		if err := p.Sampling.validate(); err != nil {
+			return err
+		}
+	}
+	if err := p.Config.validate(); err != nil {
+		return err
 	}
 	return nil
 }

@@ -51,7 +51,8 @@ const (
 
 // Image Constants
 const (
-	APMImageJava = "otel/autoinstrumentation-java:latest"
+	APMImageJava   = "otel/autoinstrumentation-java:latest"
+	APMImagePython = "otel/autoinstrumentation-python:latest"
 )
 
 // Java Configs
