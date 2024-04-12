@@ -14,7 +14,7 @@ import (
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 )
 
-// verify javaInjector implements mutation.Injector
+// verify pythonInjector implements mutation.Injector
 var _ types.Injector = &Injector{}
 
 // Mutator implements mutation.Injector
@@ -68,12 +68,12 @@ func (i *Injector) Mutate(_ context.Context, pod *corev1.Pod) (*corev1.Pod, erro
 	)
 	pSpec, err = initPythonSpec(&i.Plan.Instrumentation.Spec)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to initialize java spec")
+		return nil, errors.Wrap(err, "failed to initialize python spec")
 	}
 	for _, cont := range i.Plan.Containers {
 		contIdx = instrument.GetContainerIndex(pod, cont)
 		if pod, err = injectPythonAgent(pSpec, pod, contIdx); err != nil {
-			return nil, errors.Wrap(err, "failed to inject javaagent")
+			return nil, errors.Wrap(err, "failed to inject python agent")
 		}
 	}
 	return pod, nil
