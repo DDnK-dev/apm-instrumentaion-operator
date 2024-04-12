@@ -19,3 +19,12 @@ func (l AnnotationMap) GetAnnotationValue(key string) (string, bool) {
 	a, b := l[key]
 	return a, b
 }
+
+func In(a string, b ...string) bool {
+	for _, c := range b {
+		if a == c {
+			return true
+		}
+	}
+	return false
+}

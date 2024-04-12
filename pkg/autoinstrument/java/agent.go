@@ -9,7 +9,6 @@ import (
 	v1 "github.com/DDnK-dev/apm-instrumentaion-operator/api/v1"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/autoinstrument/instrument"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
-	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
 )
 
 const (
@@ -17,7 +16,7 @@ const (
 	javaJVMArgument       = " -javaagent:/otel-auto-instrumentation-java/javaagent.jar"
 	javaInstrMountPath    = "/otel-auto-instrumentation-java"
 	javaInitContainerName = consts.APMInitContainerNameJava
-	javaVolumeName        = consts.APMVolumeName + "-java"
+	javaVolumeName        = consts.APMVolumeNameJava
 	javaVolumeLimit       = "200Mi"
 )
 
@@ -155,7 +154,7 @@ func injectJavaagent(jSpec *v1.Java, pod *corev1.Pod, index int) (*corev1.Pod, e
 		MountPath: javaInstrMountPath,
 	})
 	// inject volumes and init containers for the first processed container
-	if !utils.HasInitContainer(pod, javaInitContainerName) {
+	if !instrument.HasInitContainer(pod, javaInitContainerName) {
 		volumeSizeLimit := resource.MustParse(javaVolumeLimit)
 		pod.Spec.Volumes = append(pod.Spec.Volumes, corev1.Volume{
 			Name: javaVolumeName,

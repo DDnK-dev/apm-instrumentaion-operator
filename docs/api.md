@@ -15,7 +15,7 @@ Resource Types:
 <h3 id="apm.ogas.kr/v1.Configuration">Configuration
 </h3>
 <p>
-(<em>Appears on:</em><a href="#apm.ogas.kr/v1.Go">Go</a>, <a href="#apm.ogas.kr/v1.InstrumentationSpec">InstrumentationSpec</a>, <a href="#apm.ogas.kr/v1.Java">Java</a>)
+(<em>Appears on:</em><a href="#apm.ogas.kr/v1.Go">Go</a>, <a href="#apm.ogas.kr/v1.InstrumentationSpec">InstrumentationSpec</a>, <a href="#apm.ogas.kr/v1.Java">Java</a>, <a href="#apm.ogas.kr/v1.Python">Python</a>)
 </p>
 <div>
 <p>Configuration defines the common configuration for all instrumentation</p>
@@ -421,6 +421,18 @@ Go
 <td>
 </td>
 </tr>
+<tr>
+<td>
+<code>python</code><br/>
+<em>
+<a href="#apm.ogas.kr/v1.Python">
+Python
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
 </table>
 </td>
 </tr>
@@ -584,6 +596,18 @@ Java
 <em>
 <a href="#apm.ogas.kr/v1.Go">
 Go
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>python</code><br/>
+<em>
+<a href="#apm.ogas.kr/v1.Python">
+Python
 </a>
 </em>
 </td>
@@ -755,10 +779,152 @@ kubebuilder:validation:Enum=simple;none;application</p>
 </tr>
 </tbody>
 </table>
+<h3 id="apm.ogas.kr/v1.Python">Python
+</h3>
+<p>
+(<em>Appears on:</em><a href="#apm.ogas.kr/v1.InstrumentationSpec">InstrumentationSpec</a>)
+</p>
+<div>
+</div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>image</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Image is a container image with pythonagent auto-instrumentation.
+kubebuilder:default=&ldquo;otel/autoinstrumentation-python:latest&rdquo;</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>endpoint</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Endpoint defines the endpoint to send the data to.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>sampling</code><br/>
+<em>
+<a href="#apm.ogas.kr/v1.Sampling">
+Sampling
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Sampling defines the sampling configuration.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>tracer</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Tracer defines the tracer type.
+If all tracer value didn&rsquo;t set, set default value.
+[ default=otlp ]</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>serviceNameLabel</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ServiceNameLabel defines the label key used to define the service name.
+If all value didn&rsquo;t set, set default value. This value can be shadowed by OTEL_SERVICE_NAME
+[ default=app.kubernetes.io/name ]</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>propagator</code><br/>
+<em>
+[]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Propagator defines the propagation type, comma-separated list of propagators.
+If all Propagator didn&rsquo;t set, set the default value.
+[ default={tracecontext, baggage} ]
+ref: <a href="https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator">https://github.com/open-telemetry/opentelemetry-java/blob/main/sdk-extensions/autoconfigure/README.md#propagator</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>envVars</code><br/>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#envvar-v1-core">
+[]Kubernetes core/v1.EnvVar
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>EnvVars defines the environment variables to inject.
+If there is already an env var with the same name, it will be skipped.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>metrics</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Metrics defines whether to enable metrics.
+If all value didn&rsquo;t set, set default value.
+[ default=none ]</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>logs</code><br/>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Logs defines whether to enable logs.
+If all value didn&rsquo;t set, set default value.
+[ default=none ]</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="apm.ogas.kr/v1.Sampling">Sampling
 </h3>
 <p>
-(<em>Appears on:</em><a href="#apm.ogas.kr/v1.Go">Go</a>, <a href="#apm.ogas.kr/v1.InstrumentationSpec">InstrumentationSpec</a>, <a href="#apm.ogas.kr/v1.Java">Java</a>)
+(<em>Appears on:</em><a href="#apm.ogas.kr/v1.Go">Go</a>, <a href="#apm.ogas.kr/v1.InstrumentationSpec">InstrumentationSpec</a>, <a href="#apm.ogas.kr/v1.Java">Java</a>, <a href="#apm.ogas.kr/v1.Python">Python</a>)
 </p>
 <div>
 </div>
