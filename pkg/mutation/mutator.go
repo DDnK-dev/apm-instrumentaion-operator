@@ -8,6 +8,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/autoinstrument/java"
+	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/autoinstrument/python"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/consts"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/mutation/types"
 	"github.com/DDnK-dev/apm-instrumentaion-operator/pkg/utils"
@@ -23,6 +24,7 @@ type PodMutator struct {
 func NewPodMutator(pod *corev1.Pod, client client.Client) (*PodMutator, error) {
 	mutators := []types.Injector{
 		java.NewInjector(),
+		python.NewInjector(),
 	}
 	return &PodMutator{
 		pod:      pod,

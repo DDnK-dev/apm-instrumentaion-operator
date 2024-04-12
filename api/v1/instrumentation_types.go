@@ -41,6 +41,8 @@ type InstrumentationSpec struct {
 	Java Java `json:"java,omitempty"`
 
 	Go Go `json:"go,omitempty"`
+
+	Python Python `json:"python,omitempty"`
 }
 
 // Configuration defines the common configuration for all instrumentation
@@ -118,6 +120,24 @@ type Java struct {
 	// kubebuilder:default=simple
 	// kubebuilder:validation:Enum=simple;none;application
 	Logging string `json:"logging,omitempty"`
+}
+
+type Python struct {
+	// Image is a container image with pythonagent auto-instrumentation.
+	// kubebuilder:default="otel/autoinstrumentation-python:latest"
+	// +optional
+	Image string `json:"image,omitempty"`
+
+	// Endpoint defines the endpoint to send the data to.
+	// +optional
+	Endpoint string `json:"endpoint,omitempty"`
+
+	// Sampling defines the sampling configuration.
+	// +optional
+	Sampling Sampling `json:"sampling,omitempty"`
+
+	// Configuration defines the common configuration for all instrumentation.
+	Config Configuration `json:",inline"`
 }
 
 type Go struct {

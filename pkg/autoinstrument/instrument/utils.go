@@ -140,3 +140,12 @@ func OverrideConfiguration(base *v1.Configuration, lang *v1.Configuration) (*v1.
 	}
 	return lang, nil
 }
+
+func HasInitContainer(pod *corev1.Pod, name string) bool {
+	for _, c := range pod.Spec.InitContainers {
+		if c.Name == name {
+			return true
+		}
+	}
+	return false
+}

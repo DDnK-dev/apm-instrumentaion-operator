@@ -41,17 +41,21 @@ const (
 
 // InitContainer Constants
 const (
-	APMInitContainerNameJava   = "ogas-instrument-otel-java"
-	APMInitContainerNameGo     = "ogas-instrument-otel-go"
-	APMInitContainerNamePython = "ogas-instrument-otel-python"
-	APMInitContainerNameDotNet = "ogas-instrument-otel-dotnet"
+	APMInitContainerName       = "ogas-instrument-otel"
+	APMInitContainerNameJava   = APMInitContainerName + "-java"
+	APMInitContainerNameGo     = APMInitContainerName + "-go"
+	APMInitContainerNamePython = APMInitContainerName + "-python"
+	APMInitContainerNameDotNet = APMInitContainerName + "-dotnet"
 
-	APMVolumeName = "ogas-instrument"
+	APMVolumeName       = "ogas-instrument"
+	APMVolumeNameJava   = APMVolumeName + "-java"
+	APMVolumeNamePython = APMVolumeName + "-python"
 )
 
 // Image Constants
 const (
-	APMImageJava = "otel/autoinstrumentation-java:latest"
+	APMImageJava   = "otel/autoinstrumentation-java:latest"
+	APMImagePython = "otel/autoinstrumentation-python:latest"
 )
 
 // Java Configs
@@ -61,15 +65,17 @@ const (
 
 // Common Trace Environment Variables
 const (
-	EnvExporterEndpoint = "OTEL_EXPORTER_OTLP_ENDPOINT"
-	EnvTraceSampler     = "OTEL_TRACES_SAMPLER"
-	EnvTraceSamplerArg  = "OTEL_TRACES_SAMPLER_ARG"
-	EnvPropagators      = "OTEL_PROPAGATORS"
-	EnvServiceName      = "OTEL_SERVICE_NAME"
-	EnvTracesExporter   = "OTEL_TRACES_EXPORTER"
-	EnvMetricsExporter  = "OTEL_METRICS_EXPORTER"
-	EnvLogsExporter     = "OTEL_LOGS_EXPORTER"
-	EnvJavaAgentLogging = "OTEL_JAVAAGENT_LOGGING"
+	EnvExporterEndpoint                = "OTEL_EXPORTER_OTLP_ENDPOINT"
+	EnvTraceSampler                    = "OTEL_TRACES_SAMPLER"
+	EnvTraceSamplerArg                 = "OTEL_TRACES_SAMPLER_ARG"
+	EnvPropagators                     = "OTEL_PROPAGATORS"
+	EnvServiceName                     = "OTEL_SERVICE_NAME"
+	EnvTracesExporter                  = "OTEL_TRACES_EXPORTER"
+	EnvOtelExporterOTLPTracesProtocol  = "OTEL_EXPORTER_OTLP_TRACES_PROTOCOL"
+	EnvMetricsExporter                 = "OTEL_METRICS_EXPORTER"
+	EnvOtelExporterOTLPMetricsProtocol = "OTEL_EXPORTER_OTLP_METRICS_PROTOCOL"
+	EnvLogsExporter                    = "OTEL_LOGS_EXPORTER"
+	EnvJavaAgentLogging                = "OTEL_JAVAAGENT_LOGGING"
 )
 
 // Predefined Errors
